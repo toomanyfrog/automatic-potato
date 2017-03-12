@@ -1,0 +1,17 @@
+{
+  "name": "automatic-potato",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "yuiwei"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/tyuiwei/automatic-potato",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
