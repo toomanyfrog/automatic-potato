@@ -16,23 +16,47 @@
   </head>
   <body>
     <div class="container">
-      <header>
-        <h1>Dropzone.js Example</h1>
-      </header>
+        <header>
+            <h3>Instructions</h3>
+        </header>
+        <div>
+            <ul>
+                <li>Adaptive camera-projector calibration</li>
+                <li>Based on your projector setting, select a set of images to be used for calibration</li>
+                <li>Project the images in sequence and take photos of the projections from the desired viewing location.</li>
+                <li>Upload your images as a folder, with the image file names corresponding to the provided projection images</li>
+                <li><b><u><i>((Not implemented yet))</b></u></i> Upload the media you would like to project. We will pre-warp it for you based on
+                    your uploaded camera images</li>
+            </ul>
+        </div>
 
-      <div>
-        <form id="upload-widget" method="post" action="/upload" class="dropzone">
-          <div class="fallback">
-            <input name="file" type="file" multiple/>
-          </div>
-        </form>
-      </div>
+        <header>
+            <h3>Upload files in this box</h3>
+        </header>
 
-      <footer style="margin-top:500px;">
-      </footer>
+        <div>
+            <form id="upload-widget" method="post" action="/upload" class="dropzone">
+              <div class="fallback">
+                <input name="file" type="file" multiple/>
+              </div>
+            </form>
+        </div>
+        <header>
+            <h3>Pre-warped Files</h3>
+        </header>
+        <div>
+            <p>Your images will appear as links below:</p>
+            <div class="processed-files">
+                <ul>
+                </ul>
+            </div>
+        </div>
+        <footer style="margin-top:500px;">
+        </footer>
     </div>
 
     <script type="text/javascript" src="/dropzone/dist/dropzone.js"></script>
+    <script type="text/javascript" src="/jquery-3.1.1.min/index.js"></script>
     <script type="text/javascript">
         Dropzone.options.uploadWidget = {
             paramName: 'file',
@@ -45,8 +69,10 @@
             acceptedFiles: 'image/*,video/*',
             init: function() {
                 this.on('success', function( file, resp ){
-                console.log( file );
-                console.log( resp );
+                console.log( "file -" + file );
+                console.log( "resp -" + resp );
+                // write a link to the file path /processed/file-1489639047674.jpg
+                $(".processed-files ul").append("<li> <a href='"+resp+"'>image</a></li>");
                 });
                 this.on('thumbnail', function(file) {
                 if ( file.width < 640 || file.height < 480 ) {
@@ -63,6 +89,7 @@
                 };
             }
         };
+
     </script>
   </body>
 </html>

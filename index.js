@@ -1,8 +1,10 @@
 var express   =   require( 'express' );
 var multer    =   require( 'multer' );
+var bodyParser = require('body-parser');
 var sizeOf    =   require( 'image-size' );
 var exphbs    =   require( 'express-handlebars' );
 var child_process = require("child_process")
+var fs = require('fs');
 require( 'string.prototype.startswith' );
 var util = require("util");
 
@@ -22,6 +24,9 @@ var upload = multer( { storage: storage  } ); //dest: 'uploads/' } );
 var app = express();
 
 app.use( express.static( __dirname + '/bower_components' ) );
+app.use('/processed', express.static('processed'))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 //app.use(express.static('/assets/styles '));
 
 
@@ -60,16 +65,12 @@ app.post( '/upload', upload.single( 'file' ), function( req, res, next ) {
 
     process.on('close', (code) => {
         if(code == 0) {
-            return res.status( 200 ).sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
+            return res.status( 200 ).send("processed/" + req.file.filename + ".jpg");
+            //sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
         } else {
             return res.status( 200 ).send( "The image provided was not able to be processed. ")
         }
     });
-
-});
-
-
-app.get( '/download', function( req, res ) {
 
 });
 
