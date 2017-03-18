@@ -98,8 +98,6 @@ def interpolate_colour(original_image, (x0,y0)):
         if y1 == y2:
             #linearly interpolate x: color = ...
             colour = lerp(x0, [(x1, original_image[y1, x1]), (x2,original_image[y1, x2])])
-
-
     return colour
 
 
@@ -123,6 +121,7 @@ def reverse_warp_helper(original_points, cam_points, target, original_image, use
                 target[y,x] = interpolate_colour(original_image, (x0,y0))
             else:
                 target[y,x] = [0,0,0]
+
 
 
 def warp_helper(original_points, cam_points, blank, original_image, use_bi_or_wp):
@@ -160,9 +159,6 @@ def warp_helper(original_points, cam_points, blank, original_image, use_bi_or_wp
         cv2.imshow("out", out2)
         cv2.waitKey(0)
 
-
-
-
 def warp_image(original_points, original_image, cam_points, points_shape, use_bi_or_wp):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros((3000,3000, 3), dtype=np.uint8)
@@ -170,12 +166,14 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
     rows = points_shape[0]
     cols = points_shape[1]
     for index in range(len(original_points)-cols):
+        temp = np.zeros(blank.shape, dtype=np.uint8)
         if index==0 or index % (cols-1) != 0:
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             #warp_helper(original_corners, cam_corners, blank, original_image, use_bi_or_wp)
-            reverse_warp_helper(original_corners, cam_corners, blank, original_image, "none")
+            reverse_warp_helper(original_corners, cam_corners, temp, original_image, "none")
+        blank = cv2.add(blank, temp)
 
 
     cv2.imshow('blank', blank)
@@ -195,12 +193,13 @@ warp_image(original, forwarp, points, (2,3), "bi")
 # def compute_orig_loc():
 
 
-print points[:4]
-transform = fh.sourceToDest(np.array([points[0], points[1], points[3], points[4]])[:,0], np.array([original[0], original[1], original[3], original[4]]))
-dst = fh.fix_translation(original_image, transform)
-#out_2 = cv.fromarray(np.zeros((3000,3000,3),np.uint8))
-out = cv2.warpPerspective(dst, transform, (500,500))
-cv2.imshow("out", out)
-cv2.waitKey(0)
+# print points[:4]
+# transform = fh.sourceToDest(np.array([points[0], points[1], points[3], points[4]])[:,0], np.array([original[0], original[1], original[3], original[4]]))
+# dst = fh.fix_translation(original_image, transform)
+# #out_2 = cv.fromarray(np.zeros((3000,3000,3),np.uint8))
+# out = cv2.warpPerspective(dst, transform, (500,500))
+# cv2.imshow("out", out)
+# cv2.waitKey(0)
+
 #cv.WarpPerspective(cv.fromarray(dst), out_2, cv.fromarray(transform))
 #cv.SaveImage("../processed/testing.jpg", out_2) #fh.crop(out_2))
