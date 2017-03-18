@@ -3,7 +3,7 @@ import numpy as np
 
 class FindHomography:
     #corrects for translation in homography
-    def fix_translation(self, image, transform):
+    def fixTranslation(self, image, transform):
         height, width = image.shape[:2]
         corners = [[0,0], [width, 0], [height,width], [0, height]]
         new_points = []

@@ -52,9 +52,9 @@ points = []
 
 for i in range(1,number_points+1):
     img = cv2.imread("1s/a" + str(i) + ".jpg")
-    a = dco.get_contours(img)
+    a = dco.getContours(img)
     #dci.get_circles(img)
-    points.append(dco.get_centroids(a))
+    points.append(dco.getCentroids(a))
     #points.append(dci.get)
 
 

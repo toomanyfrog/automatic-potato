@@ -14,7 +14,7 @@ import imutils
 
 
 class DetectContours:
-    def get_centroids(self, contours):
+    def getCentroids(self, contours):
         centroids = []
         for c in contours:
             #compute the center of the contour
@@ -25,7 +25,7 @@ class DetectContours:
 
         return centroids
 
-    def get_contours(self, img): #returns centroid of contour (should only have one)
+    def getContours(self, img): #returns centroid of contour (should only have one)
         # find contours in the thresholded image
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -48,7 +48,7 @@ class DetectContours:
 
 
 class DetectCircles:
-    def get_avg_center(self, circles):
+    def getAvgCenter(self, circles):
         x_sum = 0
         y_sum = 0
         for (x,y,r) in circles:
@@ -58,7 +58,7 @@ class DetectCircles:
         y_sum = y_sum / len(circles)
         return (x_sum, y_sum)
 
-    def get_circles(self, image):
+    def getCircles(self, image):
         output = image.copy()
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         blurred = cv2.GaussianBlur(gray,(9,9),0)
