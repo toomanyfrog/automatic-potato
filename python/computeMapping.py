@@ -44,25 +44,43 @@ def bilinear_interpolation(x, y, points):
 
 
 
-number_points = 6
+number_points = 24
 dco = DetectContours()
 dci = DetectCircles()
 fh = FindHomography()
 points = []
 
-for i in range(1,number_points+1):
-    img = cv2.imread("1s/a" + str(i) + ".jpg")
+for i in range(0,number_points):
+    #if i < 10:
+    #    i = str(0) + str(i)
+    img = cv2.imread("3c/" + str(i) + ".jpg")
     a = dco.getContours(img)
     #dci.get_circles(img)
     points.append(dco.getCentroids(a))
     #points.append(dci.get)
 
 
+print points
 forwarp = cv2.imread('1/b.jpg')
 height, width, depth = forwarp.shape
 
 original = [(87, 141), (403, 141), (717, 141), (87, 347), (403, 347), (717, 347)]
+original3 = [(33, 33), (178, 33), (326, 33), (474, 33), (622, 33), (765, 34),
+                (33, 210), (178, 210), (326, 210), (474, 210), (622, 210), (766, 210),
+                (33, 390), (178, 390), (326, 390), (474, 390), (622, 390), (766, 390),
+                (34, 565), (178, 566), (326, 566), (474, 566), (622, 566), (765, 565)]
 
+original3b = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30), (789, 30),
+            (30, 216), (182, 216), (334, 216), (486, 216), (638, 216), (789, 216),
+            (30, 403), (182, 403), (334, 403), (486, 403), (638, 403), (789, 403),
+            (30, 589), (182, 589), (334, 589), (486, 589), (638, 589), (789, 589)]
+            
+original3c = [(25, 25), (135, 25), (245, 25), (355, 25), (465, 25), (575, 25), (685, 25), (794, 25),
+            (25, 139), (135, 139), (245, 139), (355, 139), (465, 139), (575, 139), (685, 139), (794, 139),
+            (25, 253), (135, 253), (245, 253), (355, 253), (465, 253), (575, 253), (685, 253), (794, 253),
+            (25, 367), (135, 367), (245, 367), (355, 367), (465, 367), (575, 367), (685, 367), (794, 367),
+            (25, 481), (135, 481), (245, 481), (355, 481), (465, 481), (575, 481), (685, 481), (794, 481),
+            (25, 594), (135, 594), (245, 594), (355, 594), (465, 594), (575, 594), (685, 594), (794, 594)]
 
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
@@ -170,6 +188,7 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
         if index==0 or index % (cols-1) != 0:
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
+            print index
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             #warp_helper(original_corners, cam_corners, blank, original_image, use_bi_or_wp)
             reverse_warp_helper(original_corners, cam_corners, temp, original_image, "none")
@@ -179,7 +198,7 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
     cv2.imshow('blank', blank)
     cv2.waitKey(0)
 
-warp_image(original, forwarp, points, (2,3), "bi")
+warp_image(original24, forwarp, points, (4,6), "bi")
 
 #I_POINTS1:  [(184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8)), (184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8))]
 
