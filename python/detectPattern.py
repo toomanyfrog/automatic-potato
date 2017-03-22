@@ -29,7 +29,8 @@ class DetectContours:
         # find contours in the thresholded image
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        (thresh, im_bw) = cv2.threshold(gray, 190, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
+        # TODO: fix the threshold to be based on overall image - relative brightness instead of absolute
+        (thresh, im_bw) = cv2.threshold(gray, 170, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
         # cv2.imshow("b", im_bw)
         # cv2.waitKey(0)
         #im_bw = 255 - im_bw
@@ -44,6 +45,11 @@ class DetectContours:
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
 
+        # show the image
+        cv2.drawContours(img, [cnts[0]], -1, (0, 255, 0), 2)
+#
+        cv2.imshow("Image", img)
+        cv2.waitKey(0)
         return [cnts[0]]
 
 
