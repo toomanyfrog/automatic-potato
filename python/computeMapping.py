@@ -50,15 +50,15 @@ dci = DetectCircles()
 fh = FindHomography()
 points = []
 
-for i in range(1,number_points+1):
-    img = cv2.imread("1s/a" + str(i) + ".jpg")
+for i in range(0,number_points):
+    img = cv2.imread("images/1s/" + str(i) + ".jpg")
     a = dco.get_contours(img)
     #dci.get_circles(img)
     points.append(dco.get_centroids(a))
     #points.append(dci.get)
 
 
-forwarp = cv2.imread('1/b.jpg')
+forwarp = cv2.imread('images/doge.jpg')
 height, width, depth = forwarp.shape
 
 original = [(87, 141), (403, 141), (717, 141), (87, 347), (403, 347), (717, 347)]
@@ -161,7 +161,7 @@ def warp_helper(original_points, cam_points, blank, original_image, use_bi_or_wp
 
 def warp_image(original_points, original_image, cam_points, points_shape, use_bi_or_wp):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
-    blank = np.zeros((3000,3000, 3), dtype=np.uint8)
+    blank = np.zeros((1000,1000, 3), dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
     rows = points_shape[0]
     cols = points_shape[1]
