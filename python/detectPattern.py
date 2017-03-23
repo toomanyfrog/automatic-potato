@@ -34,7 +34,7 @@ class DetectContours:
         # cv2.imshow("b", im_bw)
         # cv2.waitKey(0)
         #im_bw = 255 - im_bw
-        blurred = cv2.GaussianBlur(im_bw,(29,29),0)
+        blurred = cv2.GaussianBlur(im_bw,(19,19),0)
 
 
         #cnts = cv2.findContours(im_bw.copy(), cv2.RETR_EXTERNAL,

@@ -97,6 +97,8 @@ orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
 small18 =  [(293, 133), (361, 133), (430, 133), (498, 133), (566, 133), (635, 133), (293, 259), (361, 259), (430, 259),
  (498, 259), (566, 259), (635, 259), (293, 385), (361, 385), (430, 385), (498, 385), (566, 385), (635, 385)]
 
+user = [(293, 118), (783, 118), (293, 412), (783, 412)]
+
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
 #(2) homography from 4 points (1245) (2356)
 
@@ -164,56 +166,6 @@ def reverse_warp_helper(original_points, cam_points, target, original_image, use
                 target[y,x] = [0,0,0]
 
 
-
-def warp_helper(original_points, cam_points, blank, original_image, use_bi_or_wp):
-    #print "ogp: ", original_points
-
-    transform = fh.sourceToDest(np.array(cam_points)[:,0], np.array(original_points))
-    transform2,state = cv2.findHomography(np.array(cam_points)[:,0].astype(float), np.array(original_points).astype(float))
-    transform3 = cv2.getPerspectiveTransform(np.array(cam_points, np.float32)[:,0], np.array(original_points, np.float32))
-    new_points = map(lambda x: x[0], map(lambda x: fh.getDest(x, transform), original_points))
-    if use_bi_or_wp == "bi":
-        bi_points = []
-        for ctr in range(len(new_points)):
-            (x,y)= new_points[ctr]
-            (x0,y0) = original_points[ctr]
-            bi_points.append((x0,y0,np.array([x,y])))
-
-        for y in range(0, height):
-        #img[87:403, 141:347]:
-            for x in range(0, width):
-                if y >= original_points[0][1] and y <= original_points[-1][1] and x >= original_points[0][0] and x <= original_points[1][0]: # 0134
-                    #bilinear_interpolation
-                    (_x, _y) = map(int, bilinear_interpolation(x, y, bi_points))
-                    blank[_y,_x] = original_image[y,x]
-
-    elif use_bi_or_wp == "wp":
-        #warpPerspective
-        #dst = fh.fix_translation(original_image, transform)
-        #out_2 = cv.fromarray(np.zeros((3000,3000,3),np.uint8))
-        #out = cv2.warpPerspective(dst[original_points[0][1]:original_points[-1][1],
-        #        original_points[0][0]:original_points[1][0]], transform, (600,600))
-        #cv2.imshow("out", out)
-        #cv2.waitKey(0)
-        #warpPerspective
-        #out_2 = cv.fromarray(np.zeros((3000,3000,3),np.uint8))
-        og = original_image[original_points[0][1]:original_points[-1][1],
-                original_points[0][0]:original_points[1][0]]
-        cv2.imshow("out", og)
-        cv2.waitKey(0)
-        out2 = cv2.warpPerspective(original_image[original_points[0][1]:original_points[-1][1],
-                original_points[0][0]:original_points[1][0]], transform, (600,600))
-        cv2.imshow("out", out2)
-        cv2.waitKey(0)
-        out2 = cv2.warpPerspective(original_image[original_points[0][1]:original_points[-1][1],
-                original_points[0][0]:original_points[1][0]], transform2, (600,600))
-        cv2.imshow("out", out2)
-        cv2.waitKey(0)
-        out2 = cv2.warpPerspective(original_image[original_points[0][1]:original_points[-1][1],
-                original_points[0][0]:original_points[1][0]], transform3, (600,600))
-        cv2.imshow("out", out2)
-        cv2.waitKey(0)
-
 def warp_image(original_points, original_image, cam_points, points_shape, use_bi_or_wp):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros((1200,1200, 3), dtype=np.uint8)
@@ -228,7 +180,6 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
-            #warp_helper(original_corners, cam_corners, blank, original_image, use_bi_or_wp)
             reverse_warp_helper(original_corners, cam_corners, temp, original_image, "none")
         blank = cv2.add(blank, temp)
 
