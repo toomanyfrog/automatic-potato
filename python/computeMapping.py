@@ -45,7 +45,7 @@ def bilinear_interpolation(x, y, points):
 
 
 #TODO: make number_points based on (r,c)
-number_points = 24
+number_points = 18
 dco = DetectContours()
 dci = DetectCircles()
 fh = FindHomography()
@@ -84,6 +84,15 @@ original3c = [(25, 25), (135, 25), (245, 25), (355, 25), (465, 25), (575, 25), (
             (25, 367), (135, 367), (245, 367), (355, 367), (465, 367), (575, 367), (685, 367), (794, 367),
             (25, 481), (135, 481), (245, 481), (355, 481), (465, 481), (575, 481), (685, 481), (794, 481),
             (25, 594), (135, 594), (245, 594), (355, 594), (465, 594), (575, 594), (685, 594), (794, 594)]
+
+
+orig12 = [(30, 30), (283, 30), (536, 30), (789, 30), (30, 310), (283, 310),
+(536, 310), (789, 310), (30, 589), (283, 589), (536, 589), (789, 589)]
+
+orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
+(789, 30), (30, 310), (182, 310), (334, 310), (486, 310),
+(638, 310), (789, 310), (30, 589), (182, 589), (334, 589),
+(486, 589), (638, 589), (789, 589)]
 
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
@@ -126,13 +135,13 @@ def interpolate_colour(original_image, (x0,y0)):
 def reverse_warp_helper(original_points, cam_points, target, original_image, use_bi_or_wp):
     target_h, target_w, target_d = target.shape
 
-    transform = fh.sourceToDest(np.array(cam_points)[:,0], np.array(original_points))
+    #transform = fh.sourceToDest(np.array(cam_points)[:,0], np.array(original_points))
     #transform, state = cv2.findHomography(np.array(cam_points)[:,0].astype(float), np.array(original_points).astype(float))
     #transform = cv2.getPerspectiveTransform(np.array(cam_points, np.float32)[:,0], np.array(original_points, np.float32))
 
-    inverse_transform = np.linalg.inv(transform)
+    #inverse_transform = np.linalg.inv(transform)
     # OR
-    #inverse_transform = fh.sourceToDest(np.array(original_points), np.array(cam_points)[:,0])
+    inverse_transform = fh.sourceToDest(np.array(original_points), np.array(cam_points)[:,0])
     #inverse_transform = cv2.getPerspectiveTransform(np.array(original_points, np.float32), np.array(cam_points, np.float32)[:,0])
     #inverse_transform, state = cv2.findHomography(np.array(original_points).astype(float), np.array(cam_points)[:,0].astype(float))
 
@@ -211,10 +220,11 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
     cols = points_shape[1]
     for index in range(len(original_points)-cols-1):
         temp = np.zeros(blank.shape, dtype=np.uint8)
-        if index==0 or index % (cols-1) != 0:
+        if index==0 or index+1 % cols != 0:
+            print index+cols+1
+
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
-            print index
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             #warp_helper(original_corners, cam_corners, blank, original_image, use_bi_or_wp)
             reverse_warp_helper(original_corners, cam_corners, temp, original_image, "none")
@@ -224,7 +234,7 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
-warp_image(original3b, forwarp, points, (2,3), "bi")
+warp_image(orig18, forwarp, points, (3,6), "bi")
 
 #I_POINTS1:  [(184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8)), (184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8))]
 

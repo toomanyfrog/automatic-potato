@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 class CalibrationPatternGenerator:
-    dot_radius = 15
+    dot_radius = 20
 
     def createRegular(self, imgsize, dotshape, pathtowrite):
         height, width = imgsize
@@ -31,4 +31,4 @@ class CalibrationPatternGenerator:
 
 
 cpg = CalibrationPatternGenerator()
-cpg.createRegular((600,800),(6,8), "3c/")
+cpg.createRegular((600,800),(3,6), "images/18pts/")
