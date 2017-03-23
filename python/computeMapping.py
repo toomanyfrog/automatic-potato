@@ -94,6 +94,8 @@ orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
 (638, 310), (789, 310), (30, 589), (182, 589), (334, 589),
 (486, 589), (638, 589), (789, 589)]
 
+small18 =  [(293, 133), (361, 133), (430, 133), (498, 133), (566, 133), (635, 133), (293, 259), (361, 259), (430, 259),
+ (498, 259), (566, 259), (635, 259), (293, 385), (361, 385), (430, 385), (498, 385), (566, 385), (635, 385)]
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
 #(2) homography from 4 points (1245) (2356)
@@ -234,7 +236,7 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
-warp_image(orig18, forwarp, points, (3,6), "bi")
+warp_image(small18, forwarp, points, (3,6), "bi")
 
 #I_POINTS1:  [(184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8)), (184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8))]
 
