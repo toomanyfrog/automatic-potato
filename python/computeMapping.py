@@ -9,6 +9,40 @@ from detectPattern import DetectCircles
 from findHomography import FindHomography
 #TODO: make dot image generator
 
+
+# TODO: automate getting the centroids of all the original calibration images
+original = [(87, 141), (403, 141), (717, 141), (87, 347), (403, 347), (717, 347)]
+original3b0 = [(33, 33), (178, 33), (326, 33), (474, 33), (622, 33), (765, 34),
+                (33, 210), (178, 210), (326, 210), (474, 210), (622, 210), (766, 210),
+                (33, 390), (178, 390), (326, 390), (474, 390), (622, 390), (766, 390),
+                (34, 565), (178, 566), (326, 566), (474, 566), (622, 566), (765, 565)]
+
+original3b = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30), (789, 30),
+            (30, 216), (182, 216), (334, 216), (486, 216), (638, 216), (789, 216),
+            (30, 403), (182, 403), (334, 403), (486, 403), (638, 403), (789, 403),
+            (30, 589), (182, 589), (334, 589), (486, 589), (638, 589), (789, 589)]
+
+original3c = [(25, 25), (135, 25), (245, 25), (355, 25), (465, 25), (575, 25), (685, 25), (794, 25),
+            (25, 139), (135, 139), (245, 139), (355, 139), (465, 139), (575, 139), (685, 139), (794, 139),
+            (25, 253), (135, 253), (245, 253), (355, 253), (465, 253), (575, 253), (685, 253), (794, 253),
+            (25, 367), (135, 367), (245, 367), (355, 367), (465, 367), (575, 367), (685, 367), (794, 367),
+            (25, 481), (135, 481), (245, 481), (355, 481), (465, 481), (575, 481), (685, 481), (794, 481),
+            (25, 594), (135, 594), (245, 594), (355, 594), (465, 594), (575, 594), (685, 594), (794, 594)]
+
+
+orig12 = [(30, 30), (283, 30), (536, 30), (789, 30), (30, 310), (283, 310),
+(536, 310), (789, 310), (30, 589), (283, 589), (536, 589), (789, 589)]
+
+orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
+(789, 30), (30, 310), (182, 310), (334, 310), (486, 310),
+(638, 310), (789, 310), (30, 589), (182, 589), (334, 589),
+(486, 589), (638, 589), (789, 589)]
+
+small18 =  [(293, 133), (361, 133), (430, 133), (498, 133), (566, 133), (635, 133), (293, 259), (361, 259), (430, 259),
+ (498, 259), (566, 259), (635, 259), (293, 385), (361, 385), (430, 385), (498, 385), (566, 385), (635, 385)]
+
+user = [(301, 136), (747, 136), (301, 403), (747, 403)] 
+
 def lerp(v, twopoints):
     (v0, value0), (v1, value1) = twopoints
     t = v - v0
@@ -44,38 +78,6 @@ def bilinear_interpolation(x, y, points):
             q22 * (x - x1) * (y - y1)
            ) / ((x2 - x1) * (y2 - y1) + 0.0)
 
-# TODO: automate getting the centroids of all the original calibration images
-original = [(87, 141), (403, 141), (717, 141), (87, 347), (403, 347), (717, 347)]
-original3b0 = [(33, 33), (178, 33), (326, 33), (474, 33), (622, 33), (765, 34),
-                (33, 210), (178, 210), (326, 210), (474, 210), (622, 210), (766, 210),
-                (33, 390), (178, 390), (326, 390), (474, 390), (622, 390), (766, 390),
-                (34, 565), (178, 566), (326, 566), (474, 566), (622, 566), (765, 565)]
-
-original3b = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30), (789, 30),
-            (30, 216), (182, 216), (334, 216), (486, 216), (638, 216), (789, 216),
-            (30, 403), (182, 403), (334, 403), (486, 403), (638, 403), (789, 403),
-            (30, 589), (182, 589), (334, 589), (486, 589), (638, 589), (789, 589)]
-
-original3c = [(25, 25), (135, 25), (245, 25), (355, 25), (465, 25), (575, 25), (685, 25), (794, 25),
-            (25, 139), (135, 139), (245, 139), (355, 139), (465, 139), (575, 139), (685, 139), (794, 139),
-            (25, 253), (135, 253), (245, 253), (355, 253), (465, 253), (575, 253), (685, 253), (794, 253),
-            (25, 367), (135, 367), (245, 367), (355, 367), (465, 367), (575, 367), (685, 367), (794, 367),
-            (25, 481), (135, 481), (245, 481), (355, 481), (465, 481), (575, 481), (685, 481), (794, 481),
-            (25, 594), (135, 594), (245, 594), (355, 594), (465, 594), (575, 594), (685, 594), (794, 594)]
-
-
-orig12 = [(30, 30), (283, 30), (536, 30), (789, 30), (30, 310), (283, 310),
-(536, 310), (789, 310), (30, 589), (283, 589), (536, 589), (789, 589)]
-
-orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
-(789, 30), (30, 310), (182, 310), (334, 310), (486, 310),
-(638, 310), (789, 310), (30, 589), (182, 589), (334, 589),
-(486, 589), (638, 589), (789, 589)]
-
-small18 =  [(293, 133), (361, 133), (430, 133), (498, 133), (566, 133), (635, 133), (293, 259), (361, 259), (430, 259),
- (498, 259), (566, 259), (635, 259), (293, 385), (361, 385), (430, 385), (498, 385), (566, 385), (635, 385)]
-
-user = [(293, 118), (783, 118), (293, 412), (783, 412)]
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
 #(2) homography from 4 points (1245) (2356)
@@ -144,7 +146,9 @@ def reverse_warp_helper(original_points, cam_points, target, forwarp, cam_shape)
             else:
                 target[y,x] = [0,0,0]
 
-def contains_user_point(cam_points, cam_shape):
+
+def contains_user_point(cam_points, cam_shape, user_points):
+# check if a quadrilateral, defined by cam_points, contains one of the points defined by the user
     temp = np.zeros(cam_shape, np.float32)
     cv2.fillConvexPoly(temp, np.array([cam_points[0], cam_points[1], cam_points[3], cam_points[2]]), (255,255,255))
     cv2.imwrite("tmp.jpg", temp)
@@ -155,13 +159,18 @@ def contains_user_point(cam_points, cam_shape):
     cnts = cnts[0] if imutils.is_cv2() else cnts[1]
     cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
     cv2.drawContours(temp, [cnts[0]], -1, (0, 255, 0), 2)
-    cv2.imshow("t", temp)
-    cv2.waitKey(0)
+    for point in user_points:
+        in_poly = cv2.pointPolygonTest(cnts[0], point, measureDist=False)
+        if in_poly >= 0:
+            cv2.circle(temp, point, 5, [255,255,255], -1)
+            cv2.imshow("img", temp)
+            cv2.waitKey(0)
+            return True
+    return False
 
 
 
-
-def warp_image(original_points, forwarp, cam_points, points_shape, use_bi_or_wp, cam_shape):
+def warp_image(original_points, forwarp, cam_points, points_shape, cam_shape, user_points):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros((1200,1200, 3), dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
@@ -175,7 +184,7 @@ def warp_image(original_points, forwarp, cam_points, points_shape, use_bi_or_wp,
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
-            contains_user_point(map(lambda x: x[0], cam_corners), cam_shape)
+            contains_user_point(map(lambda x: x[0], cam_corners), cam_shape, user_points)
             reverse_warp_helper(original_corners, cam_corners, temp, forwarp, cam_shape)
         blank = cv2.add(blank, temp)
 
@@ -210,7 +219,7 @@ print points
 forwarp = cv2.imread('images/doge.jpg')
 height, width, depth = forwarp.shape
 
-warp_image(small18, forwarp, points, (3,6), "bi", cam_shape)
+warp_image(small18, forwarp, points, (3,6), cam_shape, user)
 
 #I_POINTS1:  [(184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8)), (184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8))]
 
