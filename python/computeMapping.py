@@ -3,6 +3,7 @@ import cv2.cv as cv
 import numpy as np
 import math
 import sys
+import imutils
 from detectPattern import DetectContours
 from detectPattern import DetectCircles
 from findHomography import FindHomography
@@ -42,29 +43,6 @@ def bilinear_interpolation(x, y, points):
             q12 * (x2 - x) * (y - y1) +
             q22 * (x - x1) * (y - y1)
            ) / ((x2 - x1) * (y2 - y1) + 0.0)
-
-
-#TODO: make number_points based on (r,c)
-number_points = 18
-dco = DetectContours()
-dci = DetectCircles()
-fh = FindHomography()
-points = []
-
-for i in range(0,number_points):
-    #if i < 10:
-    #    i = str(0) + str(i)
-    img = cv2.imread("images/" + sys.argv[1] + "/" + str(i) + ".jpg")
-    a = dco.getContours(img)
-    #dci.get_circles(img)
-    points.append(dco.getCentroids(a))
-    #points.append(dci.get)
-
-
-print points
-forwarp = cv2.imread('images/doge.jpg')
-height, width, depth = forwarp.shape
-
 
 # TODO: automate getting the centroids of all the original calibration images
 original = [(87, 141), (403, 141), (717, 141), (87, 347), (403, 347), (717, 347)]
@@ -136,8 +114,9 @@ def interpolate_colour(original_image, (x0,y0)):
     return colour
 
 
-def reverse_warp_helper(original_points, cam_points, target, original_image, use_bi_or_wp):
+def reverse_warp_helper(original_points, cam_points, target, forwarp, cam_shape):
     target_h, target_w, target_d = target.shape
+
 
     #transform = fh.sourceToDest(np.array(cam_points)[:,0], np.array(original_points))
     #transform, state = cv2.findHomography(np.array(cam_points)[:,0].astype(float), np.array(original_points).astype(float))
@@ -161,12 +140,28 @@ def reverse_warp_helper(original_points, cam_points, target, original_image, use
             (x0, y0) = original_location[0]
             #check if the original location, according to the homography,  is  within our rectangle of interest
             if y0 >= original_points[0][1] and y0 <= original_points[-1][1] and x0 >= original_points[0][0] and x0 <= original_points[1][0]:
-                target[y,x] = interpolate_colour(original_image, (x0,y0))
+                target[y,x] = interpolate_colour(forwarp, (x0,y0))
             else:
                 target[y,x] = [0,0,0]
 
+def contains_user_point(cam_points, cam_shape):
+    temp = np.zeros(cam_shape, np.float32)
+    cv2.fillConvexPoly(temp, np.array([cam_points[0], cam_points[1], cam_points[3], cam_points[2]]), (255,255,255))
+    cv2.imwrite("tmp.jpg", temp)
+    tmp = cv2.imread("tmp.jpg")
+    gray = cv2.cvtColor(tmp, cv2.COLOR_BGR2GRAY)
+    (thresh, im_bw) = cv2.threshold(gray, 140, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
+    cnts = cv2.findContours(im_bw, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+    cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+    cv2.drawContours(temp, [cnts[0]], -1, (0, 255, 0), 2)
+    cv2.imshow("t", temp)
+    cv2.waitKey(0)
 
-def warp_image(original_points, original_image, cam_points, points_shape, use_bi_or_wp):
+
+
+
+def warp_image(original_points, forwarp, cam_points, points_shape, use_bi_or_wp, cam_shape):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros((1200,1200, 3), dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
@@ -180,14 +175,42 @@ def warp_image(original_points, original_image, cam_points, points_shape, use_bi
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
-            reverse_warp_helper(original_corners, cam_corners, temp, original_image, "none")
+            contains_user_point(map(lambda x: x[0], cam_corners), cam_shape)
+            reverse_warp_helper(original_corners, cam_corners, temp, forwarp, cam_shape)
         blank = cv2.add(blank, temp)
 
     cv2.imwrite(sys.argv[2], blank)
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
-warp_image(small18, forwarp, points, (3,6), "bi")
+
+#TODO: make number_points based on (r,c)
+number_points = 18
+dco = DetectContours()
+dci = DetectCircles()
+fh = FindHomography()
+points = []
+cam_shape = []
+
+img = cv2.imread("images/" + sys.argv[1] + "/" + str(0) + ".jpg")
+a = dco.getContours(img)
+points.append(dco.getCentroids(a))
+cam_shape = img.shape
+for i in range(1,number_points):
+    #if i < 10:
+    #    i = str(0) + str(i)
+    img = cv2.imread("images/" + sys.argv[1] + "/" + str(i) + ".jpg")
+    a = dco.getContours(img)
+    #dci.get_circles(img)
+    points.append(dco.getCentroids(a))
+    #points.append(dci.get)
+
+
+print points
+forwarp = cv2.imread('images/doge.jpg')
+height, width, depth = forwarp.shape
+
+warp_image(small18, forwarp, points, (3,6), "bi", cam_shape)
 
 #I_POINTS1:  [(184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8)), (184, 149, array([27, 40, 54], dtype=uint8)), (185, 149, array([32, 41, 54], dtype=uint8))]
 
