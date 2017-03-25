@@ -3,7 +3,7 @@ import os
 
 
 #TODO: generalise the filepath for all user-submitted folders
-path =  os.getcwd() + "/images/3d18/"
+path =  os.getcwd() + "/images/user/3e35/"
 filenames = os.listdir(path)
 
 print path

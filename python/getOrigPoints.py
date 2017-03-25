@@ -3,7 +3,7 @@ import numpy as np
 import sys
 from detectPattern import DetectContours
 
-number_points = 18
+number_points = 35
 dco = DetectContours()
 points = []
 
@@ -15,4 +15,4 @@ for i in range(0,number_points):
     #dci.get_circles(img)
     points.append(dco.getCentroids(a))
 
-print points
+print map(lambda x: x[0], points)

@@ -45,6 +45,10 @@ small18 =  [(293, 133), (361, 133), (430, 133), (498, 133), (566, 133), (635, 13
 
 user = [(301, 136), (747, 136), (301, 403), (747, 403)]
 
+orig35 = [(30, 30), (156, 30), (283, 30), (410, 30), (536, 30), (663, 30), (790, 30), (30, 170), (156, 170),
+ (283, 170), (410, 170), (536, 170), (663, 170), (790, 170), (30, 310), (156, 310), (283, 310), (410, 310),
+ (536, 310), (663, 310), (790, 310), (30, 450), (156, 450), (283, 450), (410, 450), (536, 450), (663, 450),
+ (790, 450), (30, 590), (156, 590), (283, 590), (410, 590), (536, 590), (663, 590), (790, 590)]
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
 #(2) homography from 4 points (1245) (2356)
@@ -187,7 +191,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
 
 
 #TODO: make number_points based on (r,c)
-number_points = 18
+number_points = 35
 dco = DetectContours()
 dci = DetectCircles()
 fh = FindHomography()
@@ -211,7 +215,7 @@ for i in range(1,number_points):
 print points
 forwarp = cv2.imread('images/doge18.jpg')
 height, width, depth = forwarp.shape
-userpt_locations = get_dots("userpts.jpg")
+userpt_locations = get_dots("images/user/35user2.jpg")
 #userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
 
-warp_image(orig18, forwarp, (3,6), userpt_locations, points)
+warp_image(orig35, forwarp, (5,7), userpt_locations, points)

@@ -34,4 +34,4 @@ class CalibrationPatternGenerator:
 
 
 cpg = CalibrationPatternGenerator()
-cpg.createRegular((600,800),(3,6), "images/18pts/")
+cpg.createRegular((600,800),(5,7), "images/35pts/")
