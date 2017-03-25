@@ -138,15 +138,14 @@ def original_locations(user_points, points_shape, original_points, cam_points):
 # reverse_warp_helper and warp_image are functions that loop through the rectangles and apply reverse bilinear interpolation
 # to each point in the target image rectangle to obtain the colour
 
-def reverse_warp_helper(original_points, cam_points, target, forwarp):
+def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points):
     target_h, target_w, target_d = target.shape
     #transform = fh.sourceToDest(np.array(cam_points)[:,0], np.array(original_points))
     #transform, state = cv2.findHomography(np.array(cam_points)[:,0].astype(float), np.array(original_points).astype(float))
     #transform = cv2.getPerspectiveTransform(np.array(cam_points, np.float32)[:,0], np.array(original_points, np.float32))
     #inverse_transform = np.linalg.inv(transform)
     # OR
-    print np.array(cam_points)[:,0]
-    inverse_transform = fh.sourceToDest(np.array(original_points), np.array(cam_points))
+    inverse_transform = fh.sourceToDest(np.array(user_points), np.array(cam_points)[:,0])
     #inverse_transform = cv2.getPerspectiveTransform(np.array(original_points, np.float32), np.array(cam_points, np.float32)[:,0])
     #inverse_transform, state = cv2.findHomography(np.array(original_points).astype(float), np.array(cam_points)[:,0].astype(float))
 
@@ -164,7 +163,7 @@ def reverse_warp_helper(original_points, cam_points, target, forwarp):
             else:
                 target[y,x] = [0,0,0]
 
-def warp_image(original_points, forwarp, points_shape, user_points):
+def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros((1200,1200, 3), dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
@@ -177,8 +176,9 @@ def warp_image(original_points, forwarp, points_shape, user_points):
 
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
+            cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             user_corners = [user_points[index], user_points[index+1], user_points[index+cols], user_points[index+cols+1]]
-            reverse_warp_helper(original_corners, user_corners, temp, forwarp)
+            reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners)
         blank = cv2.add(blank, temp)
 
     cv2.imwrite(sys.argv[2], blank)
@@ -212,6 +212,6 @@ print points
 forwarp = cv2.imread('images/doge18.jpg')
 height, width, depth = forwarp.shape
 userpt_locations = get_dots("userpts.jpg")
-userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
+#userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
 
-warp_image(orig18, forwarp, (3,6), userpt_orig_locations)
+warp_image(orig18, forwarp, (3,6), userpt_locations, points)

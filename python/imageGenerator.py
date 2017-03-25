@@ -1,6 +1,9 @@
 import cv2
 import numpy as np
 
+# remember to generate the dot image based on their desired projected image
+
+
 class CalibrationPatternGenerator:
     dot_radius = 20
 
