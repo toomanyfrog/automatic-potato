@@ -93,14 +93,8 @@ def interpolate_colour(original_image, (x0,y0)):
 
 def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points):
     target_h, target_w, target_d = target.shape
-    #transform = fh.sourceToDest(np.array(cam_points)[:,0], np.array(original_points))
-    #transform, state = cv2.findHomography(np.array(cam_points)[:,0].astype(float), np.array(original_points).astype(float))
-    #transform = cv2.getPerspectiveTransform(np.array(cam_points, np.float32)[:,0], np.array(original_points, np.float32))
-    #inverse_transform = np.linalg.inv(transform)
-    # OR
+
     inverse_transform = fh.sourceToDest(np.array(user_points), np.array(cam_points)[:,0])
-    #inverse_transform = cv2.getPerspectiveTransform(np.array(original_points, np.float32), np.array(cam_points, np.float32)[:,0])
-    #inverse_transform, state = cv2.findHomography(np.array(original_points).astype(float), np.array(cam_points)[:,0].astype(float))
 
     #TODO: change this from a simple nested loop to apply a function on a single numpy array (faster)
     for y in range(target_h):
@@ -139,6 +133,18 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
+def read_dots(path):
+    dco = DetectContours()
+    points = []
+    for i in range(0,number_points):
+        #if i < 10:
+        #    i = str(0) + str(i)
+        img = cv2.imread(path + "/" + str(i) + ".jpg")
+        a = dco.getContours(img)
+        #dci.get_circles(img)
+        points.append(dco.getCentroids(a))
+        #points.append(dci.get)
+    return points
 
 #TODO: make number_points based on (r,c)
 number_points = 18
@@ -148,24 +154,14 @@ fh = FindHomography()
 points = []
 cam_shape = []
 
-img = cv2.imread("images/" + sys.argv[1] + "/" + str(0) + ".jpg")
-a = dco.getContours(img)
-points.append(dco.getCentroids(a))
-cam_shape = img.shape
-for i in range(1,number_points):
-    #if i < 10:
-    #    i = str(0) + str(i)
-    img = cv2.imread("images/" + sys.argv[1] + "/" + str(i) + ".jpg")
-    a = dco.getContours(img)
-    #dci.get_circles(img)
-    points.append(dco.getCentroids(a))
-    #points.append(dci.get)
+points = read_dots("images/" + sys.argv[1])
+
 
 
 print points
-forwarp = cv2.imread('images/doge18.jpg')
+forwarp = cv2.imread('images/user/test18.jpg')
 height, width, depth = forwarp.shape
 userpt_locations = get_dots("images/user/3e18user.jpg")
 #userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
 
-warp_image(orig18, forwarp, (3,6), userpt_locations, points)
+warp_image(map(lambda x:x[0], points), forwarp, (3,6), userpt_locations, points)
