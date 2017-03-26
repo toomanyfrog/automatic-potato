@@ -18,8 +18,8 @@ def get_dots(path):
     centroids = []
     for contour in cnts:
         cv2.drawContours(dots, contour, -1, (0, 255, 0), 2)
-    #    cv2.imshow("a", dots)
-    #    cv2.waitKey(0)
+        # cv2.imshow("a", dots)
+        # cv2.waitKey(0)
         M = cv2.moments(contour)
         cX = int(M["m10"] / M["m00"])
         cY = int(M["m01"] / M["m00"])
