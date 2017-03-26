@@ -94,7 +94,7 @@ def interpolate_colour(original_image, (x0,y0)):
 def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points):
     target_h, target_w, target_d = target.shape
 
-    inverse_transform = fh.sourceToDest(np.array(user_points), np.array(cam_points)[:,0])
+    inverse_transform = fh.sourceToDest(np.array(user_points), np.array(cam_points))
 
     #TODO: change this from a simple nested loop to apply a function on a single numpy array (faster)
     for y in range(target_h):
@@ -159,9 +159,13 @@ points = read_dots("images/" + sys.argv[1])
 
 
 print points
-forwarp = cv2.imread('images/user/test18.jpg')
+forwarp = cv2.imread('images/doge18.jpg')
 height, width, depth = forwarp.shape
 userpt_locations = get_dots("images/user/3e18user.jpg")
 #userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
 
-warp_image(map(lambda x:x[0], points), forwarp, (3,6), userpt_locations, points)
+#warp_image(map(lambda x:x[0], points), forwarp, (3,6), userpt_locations, points)
+
+#warp_image(userpt_locations, forwarp, (3,6), map(lambda x:x[0] , points), userpt_locations)
+
+warp_image(orig18, forwarp, (3,6), userpt_locations, map(lambda x:x[0], points))
