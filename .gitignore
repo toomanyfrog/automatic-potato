@@ -40,3 +40,4 @@ uploads/
 processed/
 python/images
 python/*.jpg
+python/output_imgs/
