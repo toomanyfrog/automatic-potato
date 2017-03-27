@@ -1,5 +1,6 @@
 import os
 import sys
+import shutil
 from imageGenerator import CalibrationPatternGenerator
 
 # python generateImgs.py [rows] [cols] [filename]
@@ -12,3 +13,8 @@ if not os.path.exists(folderpath):
 cpg = CalibrationPatternGenerator(sys.argv[1], sys.argv[2], imgpath, folderpath)
 
 cpg.createRegular()
+
+shutil.make_archive(os.getcwd() + "/user/generated-zip/" + sys.argv[3], 'zip', folderpath)
+
+
+# TODO: probably, remove the generated folder and the zip files after being used
