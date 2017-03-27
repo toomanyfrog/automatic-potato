@@ -1,0 +1,86 @@
+<html>
+    <head>
+        <title>Projector Calibration</title>
+        <link rel="stylesheet" type="text/css" href="/dist/semantic.min.css">
+    </head>
+    <body>
+        <header>
+            <h1>Projector Calibration</h1>
+        </header>
+
+        <h4 class="ui horizontal divider header">
+            <i class="tag icon"></i>
+            Instructions
+        </h4>
+        <div>
+            <ul>
+                <li>Adaptive camera-projector calibration</li>
+                <li>Upload the media you would like to project.</li>
+                <li>Input how precise / how many dots are needed. Download the images provided.</li>
+                <li>Project the images in sequence and take photos of the projections from the desired viewing location.</li>
+                <li>Upload your images as a folder, with the image file names corresponding to the provided projection images</li>
+
+            </ul>
+        </div>
+        <h4 class="ui horizontal divider header">
+            <i class="upload icon"></i>
+            Form
+        </h4>
+        <h5 class="ui dividing header">
+            Step 1: Upload media and choose density of dots.
+        </h5>
+        <form class="ui form" id="getCalibrationImages" enctype="multipart/form-data" action="/calibrationImg/upload" method="post">
+            <div class="field">
+                <label>Upload your media:</label>
+                <input type="file" name="forWarp">
+            </div>
+            <div class="fields">
+                <div class="field">
+                    <label>Number of rows:</label>
+                    <div class="ui right labeled input">
+                        <input type="text" placeholder="Enter rows.." name="rows">
+                        <div class="ui basic label">
+                            rows
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Number of cols:</label>
+                    <div class="ui right labeled input">
+                        <input type="text" placeholder="Enter cols.." name="cols">
+                        <div class="ui basic label">
+                            cols
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="ui right floated button" type="submit">Get Calibration Images</button>
+            <span id = "status"></span>
+
+        </form>
+        <div class="ui clearing divider"></div>
+        <div class="ui hidden divider"></div>
+        <div id="insertcalibrationimgshere"></div>
+
+        <div class="ui clearing divider"></div>
+        <div class="ui hidden divider"></div>
+        <h5 class="ui dividing header">
+            Step 2: Upload photos of the projected calibration images from where your media should be viewed.
+        </h5>
+        <form class="ui form" id="uploadForm" enctype="multipart/form-data" action="/warpMedia/upload" method="post">
+            <div class="field">
+                <input type="file" name="userPhoto" multiple />
+            </div>
+                <input type="submit" value="Upload Image" name="submit">
+            <input type='text' id='random' name='random'><br>
+            <span id = "status"></span>
+        </form>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+
+    <script src="dist/semantic.min.js"></script>
+    <script src="index.js"></script>
+</html>
