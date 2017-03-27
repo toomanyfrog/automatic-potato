@@ -25,7 +25,6 @@ router.post('/upload', function(req,res){
             return res.end("Error uploading file.");
         }
         var spawn = child_process.spawn;
-        var dir = "./user/generated/" + req.file.filename;
 
         var process = spawn('python',["python/generateImgs.py", req.body.rows, req.body.cols, req.file.filename]);
         process.stdout.on('data',function(chunk){
@@ -39,8 +38,9 @@ router.post('/upload', function(req,res){
 
         process.on('close', (code) => {
            if(code == 0) {
-               res.send( { filename: req.file.filename,
-                           numDots: req.body.rows * req.body.cols });
+               res.send( {  filename: req.file.filename,
+                            numDots: req.body.rows * req.body.cols,
+                            download: "user/generated-zip/" + req.file.filename + ".zip" } );
                //sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
            } else {
                return res.status( 200 ).send( "The image provided was not able to be processed. ")

@@ -13,8 +13,9 @@ $(document).ready(function() {
                 console.log(response);
                 numDots = response.numDots;
                 mediaName = response.filename;
-                $("#canvas").show();
-                $("#status").empty().text(response);
+                $("#calibrationImgLink").append("<a href='"+response.download+"'>Download calibration images.</a>");
+                $("#calibrationSuccess").show();
+                //$("#status").empty().text(response);
             }
         });
         return false;
