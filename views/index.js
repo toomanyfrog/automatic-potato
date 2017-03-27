@@ -1,12 +1,19 @@
 $(document).ready(function() {
+
+    var numDots = 0;
+    var mediaName = "";
+
     $('#getCalibrationImages').submit(function() {
         $("#status").empty().text("File is uploading...");
         $(this).ajaxSubmit({
             error: function(xhr) {
-                status('Error: ' + xhr.status);
+                console.log('Error: ' + xhr.status);
             },
             success: function(response) {
-                console.log(response)
+                console.log(response);
+                numDots = response.numDots;
+                mediaName = response.filename;
+                $("#canvas").show();
                 $("#status").empty().text(response);
             }
         });
@@ -17,7 +24,7 @@ $(document).ready(function() {
         $("#status").empty().text("File is uploading...");
         $(this).ajaxSubmit({
             error: function(xhr) {
-                status('Error: ' + xhr.status);
+                console.log('Error: ' + xhr.status);
             },
             success: function(response) {
                 console.log(response)

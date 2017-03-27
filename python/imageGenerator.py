@@ -5,11 +5,17 @@ import numpy as np
 
 
 class CalibrationPatternGenerator:
+    # TODO: make smaller dots
     dot_radius = 20
 
-    def createRegular(self, imgsize, dotshape, pathtowrite):
-        height, width = imgsize
-        rows, cols = dotshape
+    def __init__(self, rows, cols, imgpath, folderpath):
+        self.dotshape = (rows, cols)
+        self.imgsize = cv2.imread(imgpath).shape
+        self.pathtowrite = folderpath
+
+    def createRegular(self):
+        height, width, depth = map(int, self.imgsize)
+        rows, cols = map(int, self.dotshape)
         if rows <= 1 or cols <= 1:
             raise ValueError("Not enough dots to generate a meaningful calibration pattern.")
         # imgsize : (h, w) e.g. (400, 600)
@@ -23,7 +29,7 @@ class CalibrationPatternGenerator:
                 y = r * (height - 2*self.dot_radius) / (rows -1) + self.dot_radius
                 x = c * (width  - 2*self.dot_radius) / (cols -1) + self.dot_radius
                 cv2.circle(temp, (x+10,y+10), self.dot_radius, [255,255,255], -1)
-                cv2.imwrite(pathtowrite + str(dot_index) + ".jpg", temp)
+                cv2.imwrite(self.pathtowrite + "/" + str(dot_index) + ".jpg", temp)
                 dot_index += 1
         # cv2.imwrite(pathtowrite + "a.jpg", temp)
 
@@ -31,7 +37,3 @@ class CalibrationPatternGenerator:
 
 
     # def createSpecific(): for adaptive calibration
-
-
-cpg = CalibrationPatternGenerator()
-cpg.createRegular((600,800),(5,7), "images/35pts/")

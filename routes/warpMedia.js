@@ -1,10 +1,10 @@
-var express = require('express')
-var router = express.Router()
+var express = require('express');
+var router = express.Router();
 var multer  =   require('multer');
 
 var storage =   multer.diskStorage({
     destination: function (req, file, callback) {
-        callback(null, './uploads');
+        callback(null, './user/camera');
     },
     filename: function (req, file, callback) {
         callback(null, file.fieldname + '-' + Date.now());

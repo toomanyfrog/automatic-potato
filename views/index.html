@@ -29,10 +29,10 @@
         <h5 class="ui dividing header">
             Step 1: Upload media and choose density of dots.
         </h5>
-        <form class="ui form" id="getCalibrationImages" enctype="multipart/form-data" action="/calibrationImg/upload" method="post">
+        <form class="ui form" id="getCalibrationImages" action="/calibrationImg/upload" method="post">
             <div class="field">
                 <label>Upload your media:</label>
-                <input type="file" name="forWarp">
+                <input type="file" name="media">
             </div>
             <div class="fields">
                 <div class="field">
@@ -54,13 +54,15 @@
                     </div>
                 </div>
             </div>
-            <button class="ui right floated button" type="submit">Get Calibration Images</button>
-            <span id = "status"></span>
+            <button class="ui right floated primary button" type="submit">Get Calibration Images</button>
+            <span id="status1"></span>
 
         </form>
         <div class="ui clearing divider"></div>
         <div class="ui hidden divider"></div>
-        <div id="insertcalibrationimgshere"></div>
+        <div id="canvas" style="display:none" >
+            <canvas id="drawRect" width="500px" height="300px" />
+        </div>
 
         <div class="ui clearing divider"></div>
         <div class="ui hidden divider"></div>
