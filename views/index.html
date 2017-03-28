@@ -78,7 +78,7 @@
             Step 2: Upload photos of the projected calibration images from where your media should be viewed.
         </h5>
         <div class="ui segment">
-            <form class="ui form" id="uploadForm" enctype="multipart/form-data" action="/warpMedia/upload" method="post">
+            <form class="ui form" id="uploadCamera" enctype="multipart/form-data" action="/uploadCamera/upload" method="post">
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your input.</div>
                     <div class="inline fields">
@@ -113,7 +113,7 @@
         <div id="cameraSuccess" style="display:none">
             <div id="canvas">
                 <h5 class="ui dividing header">
-                    Step 2: Indicate how you would like the image to be viewed:
+                    Step 3: Indicate how you would like the image to be viewed:
                 </h5>
                 <canvas id="drawRect" width="500px" height="300px" />
             </div>

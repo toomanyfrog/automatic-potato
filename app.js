@@ -1,7 +1,7 @@
 var express =   require("express");
 var bodyParser =    require("body-parser");
 var app =   express();
-var warpMedia = require('./routes/warpMedia');
+var uploadCamera = require('./routes/uploadCamera.js');
 var calibrationImg = require('./routes/calibrationImg.js');
 
 app.use(bodyParser.json());
@@ -9,7 +9,7 @@ app.use( express.static( __dirname + '/semantic' ) );
 app.use( express.static( __dirname + '/views' ) );
 app.use( express.static( __dirname + '/user' ) );
 
-app.use('/warpMedia', warpMedia);
+app.use('/uploadCamera', uploadCamera);
 app.use('/calibrationImg', calibrationImg);
 
 
