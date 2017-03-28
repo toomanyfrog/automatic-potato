@@ -13,7 +13,9 @@ $(document).ready(function() {
                 console.log(response);
                 numDots = response.numDots;
                 mediaName = response.filename;
-                $("#calibrationImgLink").append("<a href='"+response.download+"'>Download calibration images.</a>");
+                $("#mediaId").val(mediaName);
+                $("#calibrationImgLink").attr("href", response.download);
+                $("#calibrationImgBtn").removeClass("disabled").addClass("positive")
                 $("#calibrationSuccess").show();
                 //$("#status").empty().text(response);
             }

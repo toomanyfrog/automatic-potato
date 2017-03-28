@@ -26,59 +26,98 @@
             <i class="upload icon"></i>
             Form
         </h4>
-        <h5 class="ui dividing header">
-            Step 1: Upload media and choose density of dots.
-        </h5>
-        <form class="ui form" id="getCalibrationImages" action="/calibrationImg/upload" method="post">
-            <div class="field">
-                <label>Upload your media:</label>
-                <input type="file" name="media">
-            </div>
-            <div class="fields">
-                <div class="field">
-                    <label>Number of rows:</label>
-                    <div class="ui right labeled input">
-                        <input type="text" placeholder="Enter rows.." name="rows">
-                        <div class="ui basic label">
-                            rows
+        <div class="ui segment">
+            <h5 class="ui dividing header">
+                Step 1: Upload media and choose density of dots.
+            </h5>
+            <form class="ui form" id="getCalibrationImages" action="/calibrationImg/upload" method="post">
+                <div class="fields">
+                    <div class="field">
+                        <label>Upload your media:</label>
+                        <input type="file" name="media">
+                    </div>
+                    <div class="field">
+                        <label>Number of rows:</label>
+                        <div class="ui right labeled input">
+                            <input type="text" placeholder="Enter rows.." name="rows">
+                            <div class="ui basic label">
+                                rows
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label>Number of cols:</label>
+                        <div class="ui right labeled input">
+                            <input type="text" placeholder="Enter cols.." name="cols">
+                            <div class="ui basic label">
+                                cols
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                    <label>Number of cols:</label>
-                    <div class="ui right labeled input">
-                        <input type="text" placeholder="Enter cols.." name="cols">
-                        <div class="ui basic label">
-                            cols
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button class="ui right floated primary button" type="submit">Get Calibration Images</button>
-            <span id="status1"></span>
+                <button class="ui primary button" type="submit">Upload</button>
+                <span id="status1"></span>
 
-        </form>
+            </form>
+        </div>
         <div class="ui clearing divider"></div>
         <div class="ui hidden divider"></div>
-        <div id="calibrationSuccess" style="display:none">
-            <div id="calibrationImgLink"></div>
-            <div id="canvas">
-                <canvas id="drawRect" width="500px" height="300px" />
-            </div>
+        <div id="calibrationImgs">
+            <p>When your calibration images have been generated, download them here:</p>
+            <a id="calibrationImgLink">
+                <button class="ui disabled fluid button" id="calibrationImgBtn">
+                    <i class="download icon"></i>
+                    Get Calibration Images
+                </button>
+            </a>
         </div>
+        <div class="ui hidden divider"></div>
         <div class="ui clearing divider"></div>
         <div class="ui hidden divider"></div>
         <h5 class="ui dividing header">
             Step 2: Upload photos of the projected calibration images from where your media should be viewed.
         </h5>
-        <form class="ui form" id="uploadForm" enctype="multipart/form-data" action="/warpMedia/upload" method="post">
-            <div class="field">
-                <input type="file" name="userPhoto" multiple />
+        <div class="ui segment">
+            <form class="ui form" id="uploadForm" enctype="multipart/form-data" action="/warpMedia/upload" method="post">
+                <div class="ui segment">
+                    <div class="ui top attached label">Auto-filled based on your input.</div>
+                    <div class="inline fields">
+                        <div class="eight wide field">
+                            <label>Media id: </label>
+                            <input type="text" name="mediaId" id="mediaId" readonly="">
+                        </div>
+                        <div class="three wide field">
+                            <label>x:</label>
+                            <input type="text" readonly="" name="x">
+                        </div>
+                        <div class="three wide field">
+                            <label>y:</label>
+                            <input type="text" readonly="" name="y">
+                        </div>
+                        <div class="three wide field">
+                            <label>width:</label>
+                            <input type="text" readonly="" name="width">
+                        </div>
+                        <div class="three wide field">
+                            <label>height:</label>
+                            <input type="text" readonly="" name="height">
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <input type="file" name="cameraImgs" multiple />
+                </div>
+                <button class="ui primary button" type="submit">Upload</button>
+            </form>
+        </div>
+        <div id="cameraSuccess" style="display:none">
+            <div id="canvas">
+                <h5 class="ui dividing header">
+                    Step 2: Indicate how you would like the image to be viewed:
+                </h5>
+                <canvas id="drawRect" width="500px" height="300px" />
             </div>
-                <input type="submit" value="Upload Image" name="submit">
-            <input type='text' id='random' name='random'><br>
-            <span id = "status"></span>
-        </form>
+        </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
