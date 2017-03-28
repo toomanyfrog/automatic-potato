@@ -7,6 +7,8 @@ var calibrationImg = require('./routes/calibrationImg.js');
 app.use(bodyParser.json());
 app.use( express.static( __dirname + '/semantic' ) );
 app.use( express.static( __dirname + '/views' ) );
+app.use( express.static( __dirname + '/user' ) );
+
 app.use('/warpMedia', warpMedia);
 app.use('/calibrationImg', calibrationImg);
 

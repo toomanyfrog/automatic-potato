@@ -40,7 +40,7 @@ router.post('/upload', function(req,res){
            if(code == 0) {
                res.send( {  filename: req.file.filename,
                             numDots: req.body.rows * req.body.cols,
-                            download: "user/generated-zip/" + req.file.filename + ".zip" } );
+                            download: "generated-zip/" + req.file.filename + ".zip" } );
                //sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
            } else {
                return res.status( 200 ).send( "The image provided was not able to be processed. ")
