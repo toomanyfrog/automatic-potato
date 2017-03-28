@@ -81,10 +81,39 @@
             <form class="ui form" id="uploadCamera" enctype="multipart/form-data" action="/uploadCamera/upload" method="post">
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your input.</div>
+                        <label>Media id: </label>
+                        <input type="text" name="mediaId" id="mediaId" readonly="">
+                </div>
+                <div class="field">
+                    <input type="file" name="cameraImgs" id="cameraImgs" multiple />
+                </div>
+                <button class="ui primary button" type="submit">Upload</button>
+            </form>
+        </div>
+        <div class="ui hidden divider"></div>
+        <div class="ui clearing divider"></div>
+        <div class="ui hidden divider"></div>
+        <h5 class="ui dividing header">
+        <div class="ui segment" id="cameraSuccess" style="display:none">
+            <div id="canvas">
+                <h5 class="ui dividing header">
+                    Step 3: Indicate how you would like the image to be viewed:
+                </h5>
+                <canvas style="position:absolute" id="imageForRect" width="500px" height="300px" z-index=1></canvas>
+                <canvas style="position:absolute" id="drawRect" width="500px" height="300px" z-index=2></canvas>
+
+            </div>
+        </div>
+
+        </h5>
+        <div class="ui segment">
+            <form class="ui form" id="warpMedia" enctype="multipart/multipart/form-data" action="/warpMedia/warp" method="post">
+                <div class="ui segment">
+                    <div class="ui top attached label">Auto-filled based on your previous input this session.</div>
                     <div class="inline fields">
                         <div class="eight wide field">
                             <label>Media id: </label>
-                            <input type="text" name="mediaId" id="mediaId" readonly="">
+                            <input type="text" name="mediaId" id="mediaId2" readonly="">
                         </div>
                         <div class="three wide field">
                             <label>x:</label>
@@ -104,20 +133,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="field">
-                    <input type="file" name="cameraImgs" multiple />
-                </div>
-                <button class="ui primary button" type="submit">Upload</button>
             </form>
         </div>
-        <div id="cameraSuccess" style="display:none">
-            <div id="canvas">
-                <h5 class="ui dividing header">
-                    Step 3: Indicate how you would like the image to be viewed:
-                </h5>
-                <canvas id="drawRect" width="500px" height="300px" />
-            </div>
-        </div>
+
     </body>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"
             integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
