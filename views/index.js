@@ -48,6 +48,11 @@ $(document).ready(function() {
             var pos = getMousePos(canvas, eve);
             endX = pos.x;
             endY = pos.y;
+            $("#x").val(startX);
+            $("#y").val(startY);
+            $("#width").val(endX - startX);
+            $("#height").val(endY - startY);
+
             drawSquare(); //update on mouse-up
         }
     }
@@ -144,5 +149,9 @@ $(document).ready(function() {
             return false;
 
         }
+    });
+
+    $('#warpMedia').submit(function(e) {
+        
     });
 });

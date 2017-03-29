@@ -74,10 +74,10 @@
         <div class="ui hidden divider"></div>
         <div class="ui clearing divider"></div>
         <div class="ui hidden divider"></div>
-        <h5 class="ui dividing header">
-            Step 2: Upload photos of the projected calibration images from where your media should be viewed.
-        </h5>
         <div class="ui segment">
+            <h5 class="ui dividing header">
+                Step 2: Upload photos of the projected calibration images from where your media should be viewed.
+            </h5>
             <form class="ui form" id="uploadCamera" enctype="multipart/form-data" action="/uploadCamera/upload" method="post">
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your input.</div>
@@ -89,24 +89,25 @@
                 </div>
                 <button class="ui primary button" type="submit">Upload</button>
             </form>
+
         </div>
         <div class="ui hidden divider"></div>
         <div class="ui clearing divider"></div>
         <div class="ui hidden divider"></div>
-        <h5 class="ui dividing header">
-        <div class="ui segment" id="cameraSuccess" style="display:none">
-            <div id="canvas">
-                <h5 class="ui dividing header">
-                    Step 3: Indicate how you would like the image to be viewed:
-                </h5>
-                <canvas style="position:absolute" id="imageForRect" width="500px" height="300px" z-index=1></canvas>
-                <canvas style="position:absolute" id="drawRect" width="500px" height="300px" z-index=2></canvas>
-
-            </div>
-        </div>
-
-        </h5>
         <div class="ui segment">
+            <h5 class="ui dividing header">
+                Step 3: Indicate how you would like the image to be viewed:
+            </h5>
+
+            <div id="cameraSuccess" style="display:none">
+                <div id="canvas">
+                    <canvas style="position:absolute" id="imageForRect" width="500px" height="300px" z-index=1></canvas>
+                    <canvas style="position:absolute" id="drawRect" width="500px" height="300px" z-index=2></canvas>
+
+                </div>
+            </div>
+
+            </h5>
             <form class="ui form" id="warpMedia" enctype="multipart/multipart/form-data" action="/warpMedia/warp" method="post">
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your previous input this session.</div>
@@ -117,23 +118,25 @@
                         </div>
                         <div class="three wide field">
                             <label>x:</label>
-                            <input type="text" readonly="" name="x">
+                            <input type="text" readonly="" name="x" id="x">
                         </div>
                         <div class="three wide field">
                             <label>y:</label>
-                            <input type="text" readonly="" name="y">
+                            <input type="text" readonly="" name="y" id="y">
                         </div>
                         <div class="three wide field">
                             <label>width:</label>
-                            <input type="text" readonly="" name="width">
+                            <input type="text" readonly="" name="width" id="width">
                         </div>
                         <div class="three wide field">
                             <label>height:</label>
-                            <input type="text" readonly="" name="height">
+                            <input type="text" readonly="" name="height" id="height">
                         </div>
                     </div>
+                    <button class="ui primary button" type="submit">Done</button>
                 </div>
             </form>
+
         </div>
 
     </body>
