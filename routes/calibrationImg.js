@@ -43,7 +43,7 @@ router.post('/upload', function(req,res){
                             download: "generated-zip/" + req.file.filename + ".zip" } );
                //sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
            } else {
-               return res.status( 200 ).send( "The image provided was not able to be processed. ")
+               return res.status( 403 ).send( "The image provided was not able to be processed. ")
            }
         });
 

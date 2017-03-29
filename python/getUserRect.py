@@ -6,8 +6,10 @@ import sys
 # remember to generate the dot image based on their desired projected image
 # two images - one white rectangle and one dots based on user-drawn/getPerspectiveTransform
 
-def get_dots(path):
-    dots = cv2.imread(path)
+
+#DOTS IS A IMG MADE BLACK N WHITE SO CAN USE THRESH 240
+def get_dots(dots):
+#    dots = cv2.imread(path)
 
     gots = cv2.cvtColor(dots, cv2.COLOR_BGR2GRAY)
     (thresh, bwots) = cv2.threshold(gots, 240, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)

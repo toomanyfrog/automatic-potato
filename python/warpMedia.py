@@ -1,23 +1,20 @@
+import os
+import sys
+import cv2
+from getUserRect import *
+from detectPattern import DetectContours
+from computeMapping import *
 
-number_points = 18
-dco = DetectContours()
-dci = DetectCircles()
-fh = FindHomography()
-points = []
-cam_shape = []
+# python warpMedia.py [rows] [cols] [mediaId] [x] [y] [w] [h]
 
-points = read_dots("images/" + sys.argv[1])
+number_points = rows * cols
 
+alldot = cv2.imread(os.getcwd() + "/user/all/" + sys.argv[3])
+# make image for userpt_locations
+blank = np.zeros(cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0").shape)
 
-
-print points
-forwarp = cv2.imread('images/doge18.jpg')
+points = read_dots(os.getcwd() + "/user/camera/" + sys.argv[3]) #camera points
+forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
 height, width, depth = forwarp.shape
 userpt_locations = get_dots("images/user/3e18user.jpg")
-#userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
-
-#warp_image(map(lambda x:x[0], points), forwarp, (3,6), userpt_locations, points)
-
-#warp_image(userpt_locations, forwarp, (3,6), map(lambda x:x[0] , points), userpt_locations)
-
 warp_image(orig18, forwarp, (3,6), userpt_locations, map(lambda x:x[0], points))

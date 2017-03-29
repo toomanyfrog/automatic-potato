@@ -39,7 +39,7 @@
                     <div class="field">
                         <label>Number of rows:</label>
                         <div class="ui right labeled input">
-                            <input type="text" placeholder="Enter rows.." name="rows">
+                            <input type="text" placeholder="Enter rows.." name="rows" id="rows">
                             <div class="ui basic label">
                                 rows
                             </div>
@@ -48,7 +48,7 @@
                     <div class="field">
                         <label>Number of cols:</label>
                         <div class="ui right labeled input">
-                            <input type="text" placeholder="Enter cols.." name="cols">
+                            <input type="text" placeholder="Enter cols.." name="cols" id="cols">
                             <div class="ui basic label">
                                 cols
                             </div>
@@ -111,11 +111,31 @@
             <form class="ui form" id="warpMedia" enctype="multipart/multipart/form-data" action="/warpMedia/warp" method="post">
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your previous input this session.</div>
-                    <div class="inline fields">
-                        <div class="eight wide field">
+                    <div class="fields">
+                        <div class="six wide field">
                             <label>Media id: </label>
                             <input type="text" name="mediaId" id="mediaId2" readonly="">
                         </div>
+                        <div class="three wide field">
+                            <label>Number of rows:</label>
+                            <div class="ui right labeled input">
+                                <input type="text" name="rows" id="rows2" readonly="">
+                                <div class="ui basic label">
+                                    rows
+                                </div>
+                            </div>
+                        </div>
+                        <div class="three wide field">
+                            <label>Number of cols:</label>
+                            <div class="ui right labeled input">
+                                <input type="text" name="cols" id="cols2" readonly="">
+                                <div class="ui basic label">
+                                    cols
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inline fields">
                         <div class="three wide field">
                             <label>x:</label>
                             <input type="text" readonly="" name="x" id="x">

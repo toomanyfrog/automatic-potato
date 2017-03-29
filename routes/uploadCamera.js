@@ -40,7 +40,7 @@ router.post('/upload', function(req,res){
            if(code == 0) {
                res.end("File is uploaded");
            } else {
-               return res.status( 200 ).send( "The image provided was not able to be processed. ")
+               return res.status( 403 ).send( "The image provided was not able to be processed. ")
            }
         });
     });

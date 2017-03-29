@@ -120,6 +120,8 @@ $(document).ready(function() {
                 mediaName = response.filename;
                 $("#mediaId").val(mediaName);
                 $("#mediaId2").val(mediaName);
+                $("#cols2").val($("#cols").val());
+                $("#rows2").val($("#rows").val());
 
                 $("#calibrationImgLink").attr("href", response.download);
                 $("#calibrationImgBtn").removeClass("disabled").addClass("positive")
@@ -152,6 +154,6 @@ $(document).ready(function() {
     });
 
     $('#warpMedia').submit(function(e) {
-        
+
     });
 });
