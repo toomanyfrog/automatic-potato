@@ -11,6 +11,41 @@ import imutils
 
 # MOMENTS IS NOT WORKING ??!?!?!?!?
 
+class DetectChanges:
+    def getContours(self, img, dot): #returns centroid of contour (should only have one)
+        # find contours in the thresholded image
+
+        img_g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        dot_g = cv2.cvtColor(dot, cv2.COLOR_BGR2GRAY)
+
+        diff = cv2.absdiff(img_g, dot_g)
+        (thresh, im_bw) = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
+        cv2.imshow("b", im_bw)
+        cv2.waitKey(0)
+        #im_bw = 255 - im_bw
+        blurred = cv2.GaussianBlur(im_bw,(5,5),0)
+        cv2.imshow("b", blurred)
+        cv2.waitKey(0)
+
+        #cnts = cv2.findContours(im_bw.copy(), cv2.RETR_EXTERNAL,
+        #    cv2.CHAIN_APPROX_SIMPLE)
+    #    cnts, hierarchy = cv2.findContours(blurred, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+
+        cnts = cv2.findContours(blurred, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+        cnts = cnts[0] if imutils.is_cv2() else cnts[1]
+        cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
+        cnts = cnts[:8]
+
+        for cnt in cnts:
+        # show the image
+            cv2.drawContours(img, [cnt], -1, (0, 255, 0), 2)
+    #
+        cv2.imshow("Image", img)
+        cv2.waitKey(0)
+        return [cnts[0]]
+
+
+
 
 
 class DetectContours:
@@ -99,3 +134,6 @@ class DetectCircles:
 #     cnts = dco.get_contours(img)
 #     #dci.get_circles(img)
 #     print dco.get_centroids(cnts)
+
+dch = DetectChanges()
+dch.getContours(cv2.imread("images/user/3e18a/6.jpg"), cv2.imread("images/user/3e18a/7.jpg"))
