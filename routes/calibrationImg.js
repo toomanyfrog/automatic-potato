@@ -3,6 +3,7 @@ var router = express.Router();
 var multer  =   require('multer');
 var child_process = require('child_process')
 var util = require("util");
+var shortid = require('shortid');
 
 
 var storage =   multer.diskStorage({
@@ -10,7 +11,7 @@ var storage =   multer.diskStorage({
         callback(null, './user/uploads');
     },
     filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + Date.now());
+        callback(null, file.fieldname + '-' + shortid.generate());
     }
 });
 
