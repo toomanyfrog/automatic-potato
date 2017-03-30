@@ -28,7 +28,7 @@ router.post('/warp', bodyParserUrl, function(req,res){
            res.send( { download: "final/" + req.body.mediaId + ".jpg" } );
            //sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
        } else {
-           return res.status( 200 ).send( "The image provided was not able to be processed. ")
+           return res.status( 403 ).send( "The image provided was not able to be processed. ")
        }
     });
 });

@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 
 # TODO: automate getting the folder
-path =  os.getcwd() + "/images/user/3e35/"
+path =  os.getcwd() + "/images/4c28/"
 filenames = os.listdir(path)
 
 for filename in filenames:

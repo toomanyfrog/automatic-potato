@@ -15,7 +15,8 @@ w = float(sys.argv[6])
 h = float(sys.argv[7])
 
 number_points = rows * cols
-
+print rows, cols
+sys.stdout.flush()
 # alldot = cv2.imread(os.getcwd() + "/user/all/" + sys.argv[3] + ".jpg")
 # # make image for userpt_locations
 # blank = np.zeros(cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape)
@@ -35,8 +36,9 @@ number_points = rows * cols
 
 userpt_locations = read_user_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points, x,y,w,h,
                     cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape)
+origpoints = read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points) #camera points
 
 points = read_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points) #camera points
 forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
 height, width, depth = forwarp.shape
-warp_image(orig18, forwarp, (3,6), map(lambda x:x[0], userpt_locations), map(lambda x:x[0], points), os.getcwd() + "/user/final/" + sys.argv[3]+".jpg")
+warp_image(map(lambda x:x[0],origpoints), forwarp, (rows, cols), map(lambda x:x[0], userpt_locations), map(lambda x:x[0], points), os.getcwd() + "/user/final/" + sys.argv[3]+".jpg")
