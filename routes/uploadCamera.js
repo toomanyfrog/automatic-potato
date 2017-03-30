@@ -22,8 +22,6 @@ var upload = multer({ storage : storage }).array('cameraImgs',100);
 
 router.post('/upload', function(req,res){
     upload(req, res, function(err) {
-        console.log(req.body);
-        console.log(req.files);
         if(err) {
             return res.end("Error uploading file.");
         }

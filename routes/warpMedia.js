@@ -7,8 +7,6 @@ var bodyParser =    require("body-parser");
 var bodyParserUrl = bodyParser.urlencoded();
 
 router.post('/warp', bodyParserUrl, function(req,res){
-    console.log(req.body);
-
     var spawn = child_process.spawn;
 
 
@@ -27,9 +25,7 @@ router.post('/warp', bodyParserUrl, function(req,res){
 
     process.on('close', (code) => {
        if(code == 0) {
-           res.send( {  filename: req.file.filename,
-                        numDots: req.body.rows * req.body.cols,
-                        download: "generated-zip/" + req.file.filename + ".zip" } );
+           res.send( { download: "final/" + req.body.mediaId + ".jpg" } );
            //sendFile( "processed/" + req.file.filename + ".jpg", { root: __dirname } );
        } else {
            return res.status( 200 ).send( "The image provided was not able to be processed. ")

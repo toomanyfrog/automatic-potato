@@ -87,9 +87,9 @@ def reverse_warp_helper(original_points, user_points, target, forwarp, cam_point
                 target[y,x] = [0,0,0]
 
 
-def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
+def warp_image(original_points, forwarp, points_shape, user_points, cam_points, path):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
-    blank = np.zeros((1200,1200, 3), dtype=np.uint8)
+    blank = np.zeros(forwarp.shape, dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
     rows = points_shape[0]
     cols = points_shape[1]
@@ -97,6 +97,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
         temp = np.zeros(blank.shape, dtype=np.uint8)
         if (index+1) % cols != 0:
             print index+cols+1
+            sys.stdout.flush()
 
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
@@ -105,7 +106,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
             reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners)
         blank = cv2.add(blank, temp)
 
-    cv2.imwrite(sys.argv[2], blank)
+    cv2.imwrite(path, blank)
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
@@ -121,6 +122,8 @@ def read_dots(path, number_points):
         points.append(dco.getCentroids(a))
         #points.append(dci.get)
     return points
+
+
 
 #TODO: make number_points based on (r,c)
 # number_points = 18

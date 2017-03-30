@@ -161,6 +161,8 @@ $(document).ready(function() {
             },
             success: function(response) {
                 console.log(response)
+                $("#finalImgLink").attr("href", response.download);
+                $("#finalImgBtn").removeClass("disabled").addClass("positive")
                 //$("#cameraSuccess").show();
                 // put image received from response here
             }
