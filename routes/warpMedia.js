@@ -2,17 +2,20 @@ var express = require('express');
 var router = express.Router();
 var child_process = require('child_process')
 var util = require("util");
+var bodyParser =    require("body-parser");
 
-router.post('/warp', function(req,res){
+var bodyParserUrl = bodyParser.urlencoded();
+
+router.post('/warp', bodyParserUrl, function(req,res){
     console.log(req.body);
-    console.log(req.file);
-    if(err) {
-        console.error(err);
-        return res.end("Error uploading file.");
-    }
+
     var spawn = child_process.spawn;
 
-    var process = spawn('python',["python/generateImgs.py", req.body.rows, req.body.cols, req.file.filename]);
+
+    // python warpMedia.py [rows] [cols] [mediaId] [x] [y] [w] [h]
+    var process = spawn('python',["python/warpMedia.py", req.body.rows, req.body.cols,
+                                req.body.mediaId, req.body.x, req.body.y, req.body.width, req.body.height]);
+
     process.stdout.on('data',function(chunk){
        var textChunk = chunk.toString('utf8');// buffer to string
        util.log(textChunk);

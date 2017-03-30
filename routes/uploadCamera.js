@@ -11,7 +11,9 @@ var storage =   multer.diskStorage({
         callback(null, './user/camera/'+ req.body.mediaId);
     },
     filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + shortid.generate());
+        console.log(req);
+        console.log(file);
+        callback(null, file.originalname);
     }
 });
 

@@ -109,7 +109,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
-def read_dots(path):
+def read_dots(path, number_points):
     dco = DetectContours()
     points = []
     for i in range(0,number_points):
