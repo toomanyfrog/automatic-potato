@@ -11,26 +11,11 @@ from detectPattern import DetectContours
 from detectPattern import DetectCircles
 from findHomography import FindHomography
 
+dco = DetectContours()
+dci = DetectCircles()
+fh = FindHomography()
 
 # TODO: automate getting the centroids of all the original calibration images
-original = [(87, 141), (403, 141), (717, 141), (87, 347), (403, 347), (717, 347)]
-original3b0 = [(33, 33), (178, 33), (326, 33), (474, 33), (622, 33), (765, 34),
-                (33, 210), (178, 210), (326, 210), (474, 210), (622, 210), (766, 210),
-                (33, 390), (178, 390), (326, 390), (474, 390), (622, 390), (766, 390),
-                (34, 565), (178, 566), (326, 566), (474, 566), (622, 566), (765, 565)]
-
-original3b = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30), (789, 30),
-            (30, 216), (182, 216), (334, 216), (486, 216), (638, 216), (789, 216),
-            (30, 403), (182, 403), (334, 403), (486, 403), (638, 403), (789, 403),
-            (30, 589), (182, 589), (334, 589), (486, 589), (638, 589), (789, 589)]
-
-original3c = [(25, 25), (135, 25), (245, 25), (355, 25), (465, 25), (575, 25), (685, 25), (794, 25),
-            (25, 139), (135, 139), (245, 139), (355, 139), (465, 139), (575, 139), (685, 139), (794, 139),
-            (25, 253), (135, 253), (245, 253), (355, 253), (465, 253), (575, 253), (685, 253), (794, 253),
-            (25, 367), (135, 367), (245, 367), (355, 367), (465, 367), (575, 367), (685, 367), (794, 367),
-            (25, 481), (135, 481), (245, 481), (355, 481), (465, 481), (575, 481), (685, 481), (794, 481),
-            (25, 594), (135, 594), (245, 594), (355, 594), (465, 594), (575, 594), (685, 594), (794, 594)]
-
 
 orig12 = [(30, 30), (283, 30), (536, 30), (789, 30), (30, 310), (283, 310),
 (536, 310), (789, 310), (30, 589), (283, 589), (536, 589), (789, 589)]
@@ -40,15 +25,6 @@ orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
 (638, 310), (789, 310), (30, 589), (182, 589), (334, 589),
 (486, 589), (638, 589), (789, 589)]
 
-small18 =  [(293, 133), (361, 133), (430, 133), (498, 133), (566, 133), (635, 133), (293, 259), (361, 259), (430, 259),
- (498, 259), (566, 259), (635, 259), (293, 385), (361, 385), (430, 385), (498, 385), (566, 385), (635, 385)]
-
-user = [(301, 136), (747, 136), (301, 403), (747, 403)]
-
-orig35 = [(30, 30), (156, 30), (283, 30), (410, 30), (536, 30), (663, 30), (790, 30), (30, 170), (156, 170),
- (283, 170), (410, 170), (536, 170), (663, 170), (790, 170), (30, 310), (156, 310), (283, 310), (410, 310),
- (536, 310), (663, 310), (790, 310), (30, 450), (156, 450), (283, 450), (410, 450), (536, 450), (663, 450),
- (790, 450), (30, 590), (156, 590), (283, 590), (410, 590), (536, 590), (663, 590), (790, 590)]
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
 #(2) homography from 4 points (1245) (2356)
@@ -111,9 +87,9 @@ def reverse_warp_helper(original_points, user_points, target, forwarp, cam_point
                 target[y,x] = [0,0,0]
 
 
-def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
+def warp_image(original_points, forwarp, points_shape, user_points, cam_points, path):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
-    blank = np.zeros((1200,1200, 3), dtype=np.uint8)
+    blank = np.zeros(forwarp.shape, dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
     rows = points_shape[0]
     cols = points_shape[1]
@@ -121,6 +97,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
         temp = np.zeros(blank.shape, dtype=np.uint8)
         if (index+1) % cols != 0:
             print index+cols+1
+            sys.stdout.flush()
 
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
@@ -129,11 +106,11 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
             reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners)
         blank = cv2.add(blank, temp)
 
-    cv2.imwrite(sys.argv[2], blank)
+    cv2.imwrite(path, blank)
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
-def read_dots(path):
+def read_dots(path, number_points):
     dco = DetectContours()
     points = []
     for i in range(0,number_points):
@@ -146,26 +123,23 @@ def read_dots(path):
         #points.append(dci.get)
     return points
 
+
+
 #TODO: make number_points based on (r,c)
-number_points = 18
-dco = DetectContours()
-dci = DetectCircles()
-fh = FindHomography()
-points = []
-cam_shape = []
-
-points = read_dots("images/" + sys.argv[1])
-
-
-
-print points
-forwarp = cv2.imread('images/doge18.jpg')
-height, width, depth = forwarp.shape
-userpt_locations = get_dots("images/user/3e18user.jpg")
-#userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
-
-#warp_image(map(lambda x:x[0], points), forwarp, (3,6), userpt_locations, points)
-
-#warp_image(userpt_locations, forwarp, (3,6), map(lambda x:x[0] , points), userpt_locations)
-
-warp_image(orig18, forwarp, (3,6), userpt_locations, map(lambda x:x[0], points))
+# number_points = 18
+# dco = DetectContours()
+# dci = DetectCircles()
+# fh = FindHomography()
+# points = []
+# cam_shape = []
+#
+# points = read_dots("images/" + sys.argv[1])
+#
+#
+#
+# print points
+# forwarp = cv2.imread('images/doge18.jpg')
+# height, width, depth = forwarp.shape
+# userpt_locations = get_dots("images/user/3e18user.jpg")
+#
+# warp_image(orig18, forwarp, (3,6), userpt_locations, map(lambda x:x[0], points))

@@ -36,8 +36,9 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-uploads/
+user/
 processed/
 python/images
 python/*.jpg
 python/output_imgs/
+semantic
