@@ -15,11 +15,18 @@ from findHomography import FindHomography
 
 # 1) check that i warp rectangle to camera image
 
-number_points = 18
+number_points = 28
 dco = DetectContours()
 fh = FindHomography()
 cam_points = []
 cam_shape = []
+x = 100
+y = 50
+w = 300
+h = 200
+#userpt_locations = read_user_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points, x,y,w,h,
+        #            cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape)
+#origpoints = read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points) #camera points
 
 for i in range(0,number_points):
     #if i < 10:
@@ -30,12 +37,14 @@ for i in range(0,number_points):
     cam_points.append(dco.getCentroids(a))
     #points.append(dci.get)
 
-userpt_locations = get_dots("images/user/3e18user.jpg")
+#userpt_locations = get_dots(cv2.imread("images/user/3e18user.jpg"))
+userpts = read_user_dots(os.getcwd() + "/images/4e28", number_points, x,y,w,h,cv2.imread("images/4c28/0.jpg").shape)
+userpts = map(lambda x: x[0], userpts)
 #userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
 
 def rvs_warp_pts(points_shape, user_points, cam_points):
     #blank = np.zeros(cv2.imread("images/" + sys.argv[1] + "/0.jpg").shape, dtype=np.uint8)
-    blank = cv2.imread("images/user/test18.jpg")
+    blank = cv2.imread("images/4c28/0.jpg")
     rows = points_shape[0]
     cols = points_shape[1]
     for index in range(len(user_points)-cols-1):
@@ -59,7 +68,7 @@ def rvs_warp_pts(points_shape, user_points, cam_points):
 
 def warp_pts(points_shape, user_points, cam_points):
     #blank = np.zeros(cv2.imread("images/" + sys.argv[1] + "/0.jpg").shape, dtype=np.uint8)
-    blank = cv2.imread("images/user/test18.jpg")
+    blank = cv2.imread("images/4c28/0.jpg")
     rows = points_shape[0]
     cols = points_shape[1]
     for index in range(len(user_points)-cols-1):
@@ -72,10 +81,11 @@ def warp_pts(points_shape, user_points, cam_points):
             transform = fh.sourceToDest(np.array(cam_corners)[:,0], np.array(user_corners))
             for corner in map(lambda x: x[0], cam_corners):
                 (x, y) = fh.getDest(corner, transform)[0]
+                print x,y
                 cv2.circle(blank, (int(x), int(y)), 3, [0,0,255], -1)
     #    blank = cv2.add(blank, temp)
 
     cv2.imwrite(sys.argv[2], blank)
 
 
-warp_pts((3,6), userpt_locations, cam_points)
+warp_pts((3,6), userpts, cam_points)

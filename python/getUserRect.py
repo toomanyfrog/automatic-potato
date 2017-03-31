@@ -15,11 +15,12 @@ def read_user_dots(path, number_points, x, y, w, h, shape):
     for i in range(0,number_points):
         #if i < 10:
         #    i = str(0) + str(i)
+        print path + "/" + str(i) + ".jpg"
         img = cv2.imread(path + "/" + str(i) + ".jpg")
         # make image for userpt_locations
         blank = np.zeros(shape)
-        f_x = w / img.shape[1]
-        f_y = h / img.shape[0]
+        f_x = 1.0 * w / img.shape[1]
+        f_y = 1.0* h / img.shape[0]
 
         print img.shape
         print f_y, f_x
