@@ -68,6 +68,7 @@ def interpolate_colour(original_image, (x0,y0)):
 # to each point in the target image rectangle to obtain the colour
 
 def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points):
+
     target_h, target_w, target_d = target.shape
 
     inverse_transform = fh.sourceToDest(np.array(user_points), np.array(cam_points))
@@ -79,6 +80,7 @@ def reverse_warp_helper(original_points, user_points, target, forwarp, cam_point
             # if point in original box, interpolate color, else point outside, put as black/white?
             # then mask out the black/white outside points and combine the image
             original_location = fh.getDest([x,y], inverse_transform)
+
             (x0, y0) = original_location[0]
             #check if the original location, according to the homography,  is  within our rectangle of interest
             if y0 >= original_points[0][1] and y0 <= original_points[-1][1] and x0 >= original_points[0][0] and x0 <= original_points[1][0]:
@@ -87,9 +89,9 @@ def reverse_warp_helper(original_points, user_points, target, forwarp, cam_point
                 target[y,x] = [0,0,0]
 
 
-def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
+def warp_image(original_points, forwarp, points_shape, user_points, cam_points, path):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
-    blank = np.zeros((1200,1200, 3), dtype=np.uint8)
+    blank = np.zeros(forwarp.shape, dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
     rows = points_shape[0]
     cols = points_shape[1]
@@ -97,6 +99,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
         temp = np.zeros(blank.shape, dtype=np.uint8)
         if (index+1) % cols != 0:
             print index+cols+1
+            sys.stdout.flush()
 
             original_corners = [original_points[index], original_points[index+1],
                                 original_points[index+cols], original_points[index+cols+1]]
@@ -105,16 +108,17 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points):
             reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners)
         blank = cv2.add(blank, temp)
 
-    cv2.imwrite(sys.argv[2], blank)
+    cv2.imwrite(path, blank)
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 
-def read_dots(path):
+def read_dots(path, number_points):
     dco = DetectContours()
     points = []
     for i in range(0,number_points):
         #if i < 10:
         #    i = str(0) + str(i)
+        print path + "/" + str(i) + ".jpg"
         img = cv2.imread(path + "/" + str(i) + ".jpg")
         a = dco.getContours(img)
         #dci.get_circles(img)
@@ -122,21 +126,27 @@ def read_dots(path):
         #points.append(dci.get)
     return points
 
+
+
 #TODO: make number_points based on (r,c)
-# number_points = 18
+# number_points = 28
 # dco = DetectContours()
-# dci = DetectCircles()
 # fh = FindHomography()
 # points = []
 # cam_shape = []
 #
-# points = read_dots("images/" + sys.argv[1])
+# points = read_dots("images/" + sys.argv[1], number_points)
 #
-#
+# x = 250
+# y = 150
+# w = 300
+# h = 200
 #
 # print points
-# forwarp = cv2.imread('images/doge18.jpg')
+# forwarp = cv2.imread("images/" + sys.argv[1] + "/0.jpg")
 # height, width, depth = forwarp.shape
-# userpt_locations = get_dots("images/user/3e18user.jpg")
+# userpt_locations = map(lambda x: x[0], read_user_dots("images/4e28/", number_points, x,y,w,h, cv2.imread("images/" + sys.argv[1] + "/0.jpg").shape))
+# orig = map(lambda x: x[0], read_dots("images/4e28/", number_points))
 #
-# warp_image(orig18, forwarp, (3,6), userpt_locations, map(lambda x:x[0], points))
+# #warp_image(orig, forwarp, (4,7), userpt_locations, map(lambda x:x[0], points), sys.argv[2])
+# warp_image(map(lambda x:x[0], points), forwarp, (4,7), userpt_locations, map(lambda x:x[0], points), sys.argv[2])

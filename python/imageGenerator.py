@@ -6,13 +6,12 @@ import numpy as np
 
 class CalibrationPatternGenerator:
     # TODO: make smaller dots
-    dot_radius = 20
+    dot_radius = 10
 
     def __init__(self, rows, cols, imgpath, folderpath, allpath):
         self.dotshape = (rows, cols)
         self.imgsize = cv2.imread(imgpath).shape
         self.pathtowrite = folderpath
-        self.pathforall = allpath
 
     def createRegular(self):
         height, width, depth = map(int, self.imgsize)
@@ -21,7 +20,7 @@ class CalibrationPatternGenerator:
             raise ValueError("Not enough dots to generate a meaningful calibration pattern.")
         # imgsize : (h, w) e.g. (400, 600)
         # dotshape: (h, w) e.g. (2, 3), (4, 6) - determines the detail of dot
-        blank = np.zeros((self.dot_radius*2 + height, self.dot_radius*2 + width, 3), dtype=np.uint8)
+        #blank = np.zeros((self.dot_radius*2 + height, self.dot_radius*2 + width, 3), dtype=np.uint8)
 
         dot_index = 0
         for r in range(rows):
@@ -32,9 +31,9 @@ class CalibrationPatternGenerator:
                 cv2.circle(temp, (x + self.dot_radius, y + self.dot_radius), self.dot_radius, [255,255,255], -1)
                 cv2.imwrite(self.pathtowrite + "/" + str(dot_index) + ".jpg", temp)
                 dot_index += 1
-                blank = cv2.add(blank, temp)
+                #blank = cv2.add(blank, temp)
 
-        cv2.imwrite(self.pathforall + ".jpg", blank)
+    ##    cv2.imwrite(self.pathforall + ".jpg", blank)
 
 
 

@@ -11,7 +11,9 @@ var storage =   multer.diskStorage({
         callback(null, './user/camera/'+ req.body.mediaId);
     },
     filename: function (req, file, callback) {
-        callback(null, file.fieldname + '-' + shortid.generate());
+        console.log(req);
+        console.log(file);
+        callback(null, file.originalname);
     }
 });
 
@@ -20,8 +22,6 @@ var upload = multer({ storage : storage }).array('cameraImgs',100);
 
 router.post('/upload', function(req,res){
     upload(req, res, function(err) {
-        console.log(req.body);
-        console.log(req.files);
         if(err) {
             return res.end("Error uploading file.");
         }

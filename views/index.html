@@ -108,7 +108,7 @@
             </div>
 
             </h5>
-            <form class="ui form" id="warpMedia" enctype="multipart/multipart/form-data" action="/warpMedia/warp" method="post">
+            <form class="ui form" id="warpMedia" action="/warpMedia/warp" method="post">
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your previous input this session.</div>
                     <div class="fields">
@@ -157,6 +157,15 @@
                 </div>
             </form>
 
+        </div>
+        <div id="finalImg">
+            <p>When your calibration images have been generated, download them here:</p>
+            <a id="finalImgLink">
+                <button class="ui disabled fluid button" id="finalImgBtn">
+                    <i class="download icon"></i>
+                    Get Final Media
+                </button>
+            </a>
         </div>
 
     </body>
