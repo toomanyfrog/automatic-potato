@@ -22,7 +22,9 @@ class CalibrationPatternGenerator:
         # dotshape: (h, w) e.g. (2, 3), (4, 6) - determines the detail of dot
         #blank = np.zeros((self.dot_radius*2 + height, self.dot_radius*2 + width, 3), dtype=np.uint8)
 
-        dot_index = 0
+        temp = np.zeros((self.dot_radius*2 + height, self.dot_radius*2 + width, 3), dtype=np.uint8)
+        cv2.imwrite(self.pathtowrite + "/0.jpg", temp)
+        dot_index = 1
         for r in range(rows):
             for c in range(cols):
                 temp = np.zeros((self.dot_radius*2 + height, self.dot_radius*2 + width, 3), dtype=np.uint8)

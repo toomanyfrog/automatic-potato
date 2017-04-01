@@ -6,7 +6,7 @@ import sys
 import os
 import imutils
 from util import *
-from getUserRect import *
+from getDots import *
 from detectPattern import DetectContours
 from detectPattern import DetectCircles
 from findHomography import FindHomography
@@ -111,20 +111,6 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points, 
     cv2.imwrite(path, blank)
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
-
-def read_dots(path, number_points):
-    dco = DetectContours()
-    points = []
-    for i in range(0,number_points):
-        #if i < 10:
-        #    i = str(0) + str(i)
-        print path + "/" + str(i) + ".jpg"
-        img = cv2.imread(path + "/" + str(i) + ".jpg")
-        a = dco.getContours(img)
-        #dci.get_circles(img)
-        points.append(dco.getCentroids(a))
-        #points.append(dci.get)
-    return points
 
 
 

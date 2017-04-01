@@ -3,11 +3,11 @@ import cv2
 import numpy as np
 
 # TODO: automate getting the folder
-path =  os.getcwd() + "/images/4c28/"
+path =  os.getcwd() + "/cd/cd28/"
 filenames = os.listdir(path)
 
 for filename in filenames:
-   cv2.imwrite(path+filename, cv2.resize(cv2.imread(path+filename),None,fx=0.75, fy=0.75, interpolation = cv2.INTER_CUBIC))
+   cv2.imwrite(path+filename, cv2.resize(cv2.imread(path+filename),None,fx=0.25, fy=0.25, interpolation = cv2.INTER_CUBIC))
 
 # shape = (560, 996, 3)
 # for i in range(18):

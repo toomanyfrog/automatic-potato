@@ -1,7 +1,7 @@
 import os
 import sys
 import cv2
-from getDots import *
+from getUserRect import *
 from detectPattern import DetectContours
 from computeMapping import *
 

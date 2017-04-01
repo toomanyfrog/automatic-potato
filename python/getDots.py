@@ -8,11 +8,26 @@ from detectPattern import DetectContours
 # remember to generate the dot image based on their desired projected image
 # two images - one white rectangle and one dots based on user-drawn/getPerspectiveTransform
 
+def read_dots(path, number_points):
+    dco = DetectContours()
+    points = []
+    for i in range(1,number_points):
+        #if i < 10:
+        #    i = str(0) + str(i)
+        print path + "/" + str(i) + ".jpg"
+        img = cv2.imread(path + "/" + str(i) + ".jpg")
+        a = dco.getContours(img)
+        #dci.get_circles(img)
+        points.append(dco.getCentroids(a))
+        #points.append(dci.get)
+    return points
+
+
 
 def read_user_dots(path, number_points, x, y, w, h, shape):
     dco = DetectContours()
     points = []
-    for i in range(0,number_points):
+    for i in range(1,number_points):
         #if i < 10:
         #    i = str(0) + str(i)
         print path + "/" + str(i) + ".jpg"

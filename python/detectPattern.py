@@ -134,6 +134,6 @@ class DetectCircles:
 #     cnts = dco.get_contours(img)
 #     #dci.get_circles(img)
 #     print dco.get_centroids(cnts)
-
-dch = DetectChanges()
-dch.getContours(cv2.imread("images/user/3e18a/6.jpg"), cv2.imread("images/user/3e18a/7.jpg"))
+#
+# dch = DetectChanges()
+# dch.getContours(cv2.imread("images/user/3e18a/6.jpg"), cv2.imread("images/user/3e18a/7.jpg"))
