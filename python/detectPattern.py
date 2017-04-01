@@ -23,7 +23,7 @@ class DetectChanges:
         cv2.imshow("b", im_bw)
         cv2.waitKey(0)
         #im_bw = 255 - im_bw
-        blurred = cv2.GaussianBlur(im_bw,(5,5),0)
+        blurred = cv2.medianBlur(im_bw,11)
         cv2.imshow("b", blurred)
         cv2.waitKey(0)
 
@@ -34,7 +34,7 @@ class DetectChanges:
         cnts = cv2.findContours(blurred, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
-        cnts = cnts[:8]
+
 
         for cnt in cnts:
         # show the image
