@@ -15,15 +15,6 @@ dco = DetectContours()
 dci = DetectCircles()
 fh = FindHomography()
 
-# TODO: automate getting the centroids of all the original calibration images
-
-orig12 = [(30, 30), (283, 30), (536, 30), (789, 30), (30, 310), (283, 310),
-(536, 310), (789, 310), (30, 589), (283, 589), (536, 589), (789, 589)]
-
-orig18 = [(30, 30), (182, 30), (334, 30), (486, 30), (638, 30),
-(789, 30), (30, 310), (182, 310), (334, 310), (486, 310),
-(638, 310), (789, 310), (30, 589), (182, 589), (334, 589),
-(486, 589), (638, 589), (789, 589)]
 
 
 #(1) translation from original to points -> get in between pixels from bilinear interpolation
@@ -67,12 +58,14 @@ def interpolate_colour(original_image, (x0,y0)):
 # reverse_warp_helper and warp_image are functions that loop through the rectangles and apply reverse bilinear interpolation
 # to each point in the target image rectangle to obtain the colour
 
-def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points):
+
+def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points, testingimg, prev):
 
     target_h, target_w, target_d = target.shape
-
     inverse_transform = fh.sourceToDest(np.array(user_points), np.array(cam_points))
-
+    print user_points
+    print cam_points
+    print original_points
     #TODO: change this from a simple nested loop to apply a function on a single numpy array (faster)
     for y in range(target_h):
         for x in range(target_w):
@@ -80,23 +73,55 @@ def reverse_warp_helper(original_points, user_points, target, forwarp, cam_point
             # if point in original box, interpolate color, else point outside, put as black/white?
             # then mask out the black/white outside points and combine the image
             original_location = fh.getDest([x,y], inverse_transform)
-
             (x0, y0) = original_location[0]
+
             #check if the original location, according to the homography,  is  within our rectangle of interest
             if y0 >= original_points[0][1] and y0 <= original_points[-1][1] and x0 >= original_points[0][0] and x0 <= original_points[1][0]:
                 target[y,x] = interpolate_colour(forwarp, (x0,y0))
             else:
                 target[y,x] = [0,0,0]
+    tr  = fh.sourceToDest(np.array(cam_points),np.array(user_points))
 
+    for pt in original_points:
+        cv2.circle(target, (int(pt[0]), int(pt[1])), 5, (255, 255, 255), -1)
+
+        npt, t = fh.getDest([pt[0],pt[1]], tr)
+        print npt
+        sys.stdout.flush()
+        cv2.circle(target, (int(npt[0]), int(npt[1])), 5, (255, 255, 0), -1)
+
+
+    if prev == []:
+        return  fh.sourceToDest(np.array(cam_points), np.array(user_points))
+    else:
+        npts = []
+        for pt in original_points:
+            #transform these new points with the previous transform
+            npt, t = fh.getDest([pt[0],pt[1]], prev)
+            print npt
+            npts.append(tuple(map(int, npt)))
+            cv2.circle(target, (int(npt[0]), int(npt[1])), 2, (0, 0, 255), -1)
+
+            sys.stdout.flush()
+        cv2.line(target,npts[0],npts[1],(255,0,255),1)
+        cv2.line(target,npts[1],npts[3],(255,0,255),1)
+        cv2.line(target,npts[2],npts[3],(255,0,255),1)
+        cv2.line(target,npts[0],npts[2],(255,0,255),1)
+
+    return fh.sourceToDest(np.array(cam_points), np.array(user_points))
 
 def warp_image(original_points, forwarp, points_shape, user_points, cam_points, path):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros(forwarp.shape, dtype=np.uint8)
+    testimg = cv2.imread(os.getcwd() + "/python/cd/cd28small/0.jpg")
     #this function passes indices to a helper, which will transform that sub-rectangle
     rows = points_shape[0]
     cols = points_shape[1]
+    temp = np.zeros(blank.shape, dtype=np.uint8)
+    prev = []
+
     for index in range(len(original_points)-cols-1):
-        temp = np.zeros(blank.shape, dtype=np.uint8)
+        print index
         if (index+1) % cols != 0:
             print index+cols+1
             sys.stdout.flush()
@@ -105,10 +130,13 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points, 
                                 original_points[index+cols], original_points[index+cols+1]]
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             user_corners = [user_points[index], user_points[index+1], user_points[index+cols], user_points[index+cols+1]]
-            reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners)
-        blank = cv2.add(blank, temp)
+            prev = reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners, testimg, prev)
+            blank = cv2.add(blank, temp)
+            cv2.imshow('blank', blank)
+            cv2.waitKey(0)
 
     cv2.imwrite(path, blank)
+    cv2.imwrite("test239847.jpg", testimg)
 #    cv2.imshow('blank', blank)
 #    cv2.waitKey(0)
 

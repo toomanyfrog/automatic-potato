@@ -17,19 +17,19 @@ h = float(sys.argv[7])
 number_points = rows * cols
 print rows, cols
 sys.stdout.flush()
-# alldot = cv2.imread(os.getcwd() + "/user/all/" + sys.argv[3] + ".jpg")
-# # make image for userpt_locations
-# blank = np.zeros(cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape)
-# f_x = w / alldot.shape[1]
-# f_y = h / alldot.shape[0]
-#
-# print alldot.shape
-# print f_y, f_x
-# print w/alldot.shape[1], h/alldot.shape[0]
-# sys.stdout.flush()
-#
-# dots = cv2.resize(alldot, (None), fx=f_x, fy=f_y, interpolation = cv2.INTER_LINEAR)
-# blank[y:int(y+h), x:int(x+w)] = dots
+alldot = cv2.imread(os.getcwd() + "/python/images/doge.jpg")
+# make image for userpt_locations
+blank = np.zeros(cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape)
+f_x = w / alldot.shape[1]
+f_y = h / alldot.shape[0]
+
+print alldot.shape
+print f_y, f_x
+print w/alldot.shape[1], h/alldot.shape[0]
+sys.stdout.flush()
+
+dots = cv2.resize(alldot, (None), fx=f_x, fy=f_y, interpolation = cv2.INTER_LINEAR)
+blank[y:int(y+h), x:int(x+w)] = dots
 
 #  read_user_dots(path, number_points, x, y, w, h, shape):
 
@@ -41,4 +41,4 @@ origpoints = read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_po
 points = read_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points) #camera points
 forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
 height, width, depth = forwarp.shape
-warp_image(map(lambda x:x[0],origpoints), forwarp, (rows, cols), map(lambda x:x[0], userpt_locations), map(lambda x:x[0], points), os.getcwd() + "/user/final/" + sys.argv[3]+".jpg")
+warp_image(map(lambda x:x[0],userpt_locations), blank, (rows, cols), map(lambda x:x[0], userpt_locations), map(lambda x:x[0], points), os.getcwd() + "/user/final/" + sys.argv[3]+".jpg")
