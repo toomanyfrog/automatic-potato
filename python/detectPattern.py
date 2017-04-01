@@ -15,13 +15,13 @@ class DetectChanges:
     def getContours(self, img, dot): #returns centroid of contour (should only have one)
         # find contours in the thresholded image
 
-        img_g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        dot_g = cv2.cvtColor(dot, cv2.COLOR_BGR2GRAY)
-
-        diff = cv2.absdiff(img_g, dot_g)
-        (thresh, im_bw) = cv2.threshold(diff, 25, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
-        cv2.imshow("b", im_bw)
+        diff = cv2.absdiff(img, dot)
+        cv2.imshow("b", diff)
         cv2.waitKey(0)
+        diffg = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
+
+        (thresh, im_bw) = cv2.threshold(diffg, 20, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
+
         #im_bw = 255 - im_bw
         blurred = cv2.medianBlur(im_bw,11)
         cv2.imshow("b", blurred)
@@ -35,12 +35,12 @@ class DetectChanges:
         cnts = cnts[0] if imutils.is_cv2() else cnts[1]
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)
 
-
+        show = img.copy()
         for cnt in cnts:
         # show the image
-            cv2.drawContours(img, [cnt], -1, (0, 255, 0), 2)
+            cv2.drawContours(show, [cnt], -1, (0, 255, 0), 2)
     #
-        cv2.imshow("Image", img)
+        cv2.imshow("Image", show)
         cv2.waitKey(0)
         return [cnts[0]]
 

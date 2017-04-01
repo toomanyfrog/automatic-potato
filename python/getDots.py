@@ -3,18 +3,23 @@ import numpy as np
 import imutils
 import sys
 from detectPattern import DetectContours
+from detectPattern import DetectChanges
 
 
 # remember to generate the dot image based on their desired projected image
 # two images - one white rectangle and one dots based on user-drawn/getPerspectiveTransform
 
 def read_cam_dots(path, number_points):
+    dch = DetectChanges()
     dco = DetectContours()
+
     points = []
     bg = cv2.imread(path + "/0.jpg")
     for i in range(0, number_points):
         img = cv2.imread(path + "/" + str(i+1) + ".jpg")
-        diff = cv2.absdiff(bg, img)
+        a = dch.getContours(bg, img)
+        points.append(dco.getCentroids(a))
+    return points
 
 def read_dots(path, number_points):
     dco = DetectContours()
