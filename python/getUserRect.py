@@ -20,7 +20,7 @@ def read_user_dots(path, number_points, x, y, w, h, shape):
         # make image for userpt_locations
         blank = np.zeros(shape)
         f_x = 1.0 * w / img.shape[1]
-        f_y = 1.0* h / img.shape[0]
+        f_y = 1.0 * h / img.shape[0]
 
         print img.shape
         print f_y, f_x
@@ -36,6 +36,21 @@ def read_user_dots(path, number_points, x, y, w, h, shape):
         points.append(dco.getCentroids(a))
         #points.append(dci.get)
     return points
+
+def read_dots(path, number_points):
+    dco = DetectContours()
+    points = []
+    for i in range(0,number_points):
+        #if i < 10:
+        #    i = str(0) + str(i)
+        print path + "/" + str(i) + ".jpg"
+        img = cv2.imread(path + "/" + str(i) + ".jpg")
+        a = dco.getContours(img)
+        #dci.get_circles(img)
+        points.append(dco.getCentroids(a))
+        #points.append(dci.get)
+    return points
+
 
 #DOTS IS A IMG MADE BLACK N WHITE SO CAN USE THRESH 240
 def get_dots(dots):
