@@ -44,7 +44,9 @@ def interpolate_colour(original_image, (x0,y0)):
     x2 = int(math.ceil(x0))
     y1 = int(math.floor(y0))
     y2 = int(math.ceil(y0))
-    if x1 != x2 and y1 != y2 and y2 < original_image.shape[0] and x2 < original_image.shape[1]:
+    if y2 >= original_image.shape[0] or x2 >= original_image.shape[1]:
+        return [0,0,0]
+    if x1 != x2 and y1 != y2:
         bi_points = []
         #TODO: check if its original_image[x,y] or original_image[y,x]
         bi_points.append((x1, y1, np.array(map(int, original_image[y1, x1]))))

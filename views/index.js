@@ -63,6 +63,9 @@ $(document).ready(function() {
         startX = endX = pos.x;
         startY = endY = pos.y;
         drawSquare(); //update
+        $("#x").val(startX);
+        $("#y").val(startY);
+
     }
 
     function mouseXY(eve) {
@@ -71,7 +74,8 @@ $(document).ready(function() {
             var pos = getMousePos(canvas, eve);
             endX = pos.x;
             endY = pos.y;
-
+            $("#width").val(endX - startX);
+            $("#height").val(endY - startY);
             drawSquare();
         }
     }
