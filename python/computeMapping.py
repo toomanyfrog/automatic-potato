@@ -67,7 +67,7 @@ def interpolate_colour(original_image, (x0,y0)):
 # reverse_warp_helper and warp_image are functions that loop through the rectangles and apply reverse bilinear interpolation
 # to each point in the target image rectangle to obtain the colour
 
-def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points):
+def reverse_warp_helper(original_points, user_points, target, forwarp, cam_points, fx, fy):
 
     target_h, target_w, target_d = target.shape
 
@@ -79,22 +79,26 @@ def reverse_warp_helper(original_points, user_points, target, forwarp, cam_point
             # inv transform
             # if point in original box, interpolate color, else point outside, put as black/white?
             # then mask out the black/white outside points and combine the image
+            #scale = np.asarray([[fx, 0, 0], [0, fy, 0], [0, 0, 1]])
+            #(x0, y0) = fh.getDest([x, y], scale)[0]
             original_location = fh.getDest([x,y], inverse_transform)
 
-            (x0, y0) = original_location[0]
+            (x01, y01) = original_location[0]
+
             #check if the original location, according to the homography,  is  within our rectangle of interest
-            if y0 >= original_points[0][1] and y0 <= original_points[-1][1] and x0 >= original_points[0][0] and x0 <= original_points[1][0]:
-                target[y,x] = interpolate_colour(forwarp, (x0,y0))
+            if y01 >= original_points[0][1] and y01 <= original_points[-1][1] and x01 >= original_points[0][0] and x01 <= original_points[1][0]:
+                target[y,x] = interpolate_colour(forwarp, (x01,y01))
             else:
                 target[y,x] = [0,0,0]
 
 
-def warp_image(original_points, forwarp, points_shape, user_points, cam_points, path):
+def warp_image(original_points, forwarp, points_shape, user_points, cam_points, path, fx, fy):
     # points_shape: (rows, cols) tuple, describing the layout of dots e.g. 9 dots (3,3) or 12 dots (3,4)
     blank = np.zeros(forwarp.shape, dtype=np.uint8)
     #this function passes indices to a helper, which will transform that sub-rectangle
     rows = points_shape[0]
     cols = points_shape[1]
+
     for index in range(len(original_points)-cols-1):
         temp = np.zeros(blank.shape, dtype=np.uint8)
         if (index+1) % cols != 0:
@@ -105,7 +109,7 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points, 
                                 original_points[index+cols], original_points[index+cols+1]]
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             user_corners = [user_points[index], user_points[index+1], user_points[index+cols], user_points[index+cols+1]]
-            reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners)
+            reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners, fx, fy)
         blank = cv2.add(blank, temp)
 
     cv2.imwrite(path, blank)

@@ -6,7 +6,7 @@ import sys
 import os
 import imutils
 from util import *
-from getUserRect import *
+from getDotsOld import *
 from detectPattern import DetectContours
 from detectPattern import DetectCircles
 from findHomography import FindHomography
@@ -38,7 +38,7 @@ for i in range(0,number_points):
     #points.append(dci.get)
 
 #userpt_locations = get_dots(cv2.imread("images/user/3e18user.jpg"))
-userpts = read_user_dots(os.getcwd() + "/images/4e28", number_points, x,y,w,h,cv2.imread("images/4c28/0.jpg").shape)
+userpts = read_user_dots("images/4e28", number_points, x,y,w,h,cv2.imread("images/4c28/0.jpg").shape)
 userpts = map(lambda x: x[0], userpts)
 #userpt_orig_locations = original_locations(userpt_locations, (3,6), orig18, points)
 
@@ -88,4 +88,4 @@ def warp_pts(points_shape, user_points, cam_points):
     cv2.imwrite(sys.argv[2], blank)
 
 
-warp_pts((3,6), userpts, cam_points)
+warp_pts((4,7), userpts, cam_points)
