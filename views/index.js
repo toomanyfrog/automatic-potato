@@ -76,7 +76,6 @@ $(document).ready(function() {
             endY = pos.y;
             $("#width").val(endX - startX);
             $("#height").val(endY - startY);
-
             drawSquare();
         }
     }
@@ -138,7 +137,7 @@ $(document).ready(function() {
 
     $('#uploadCamera').submit(function(e) {
         console.log(numDots)
-        if ($("[name='cameraImgs']")[0].files.length != numDots + 1) {
+        if ($("[name='cameraImgs']")[0].files.length != numDots) {
             e.preventDefault();
             console.log("Bad request");
         } else {

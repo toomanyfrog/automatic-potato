@@ -16,53 +16,9 @@ def read_cam_dots(path, number_points):
     points = []
     bg = cv2.imread(path + "/0.jpg")
     for i in range(0, number_points):
-        img = cv2.imread(path + "/" + str(i+1) + ".jpg")
+        img = cv2.imread(path + "/" + str(i) + ".jpg")
         a = dch.getContours(bg, img)
         points.append(dco.getCentroids(a))
-    return points
-
-def read_dots(path, number_points):
-    dco = DetectContours()
-    points = []
-    for i in range(0,number_points):
-        #if i < 10:
-        #    i = str(0) + str(i)
-        print path + "/" + str(i+1) + ".jpg"
-        img = cv2.imread(path + "/" + str(i+1) + ".jpg")
-        a = dco.getContours(img)
-        #dci.get_circles(img)
-        points.append(dco.getCentroids(a))
-        #points.append(dci.get)
-    return points
-
-
-
-def read_user_dots(path, number_points, x, y, w, h, shape):
-    dco = DetectContours()
-    points = []
-    for i in range(0,number_points):
-        #if i < 10:
-        #    i = str(0) + str(i)
-        print path + "/" + str(i+1) + ".jpg"
-        img = cv2.imread(path + "/" + str(i+1) + ".jpg")
-        # make image for userpt_locations
-        blank = np.zeros(shape)
-        f_x = 1.0 * w / img.shape[1]
-        f_y = 1.0 * h / img.shape[0]
-
-        print img.shape
-        print f_y, f_x
-        print w/img.shape[1], h/img.shape[0]
-        sys.stdout.flush()
-
-        dots = cv2.resize(img, (None), fx=f_x, fy=f_y, interpolation = cv2.INTER_LINEAR)
-        blank[y:int(y+h), x:int(x+w)] = dots
-        print blank.dtype
-        sys.stdout.flush()
-        a = dco.getContours(np.asarray(blank, np.uint8))
-        #dci.get_circles(img)
-        points.append(dco.getCentroids(a))
-        #points.append(dci.get)
     return points
 
 def read_dots(path, number_points):
@@ -79,6 +35,35 @@ def read_dots(path, number_points):
         #points.append(dci.get)
     return points
 
+
+
+def read_user_dots(path, number_points, x, y, w, h, shape):
+    dco = DetectContours()
+    points = []
+    for i in range(0,number_points):
+        #if i < 10:
+        #    i = str(0) + str(i)
+        print path + "/" + str(i) + ".jpg"
+        img = cv2.imread(path + "/" + str(i) + ".jpg")
+        # make image for userpt_locations
+        blank = np.zeros(shape)
+        f_x = 1.0 * w / img.shape[1]
+        f_y = 1.0* h / img.shape[0]
+
+        print img.shape
+        print f_y, f_x
+        print w/img.shape[1], h/img.shape[0]
+        sys.stdout.flush()
+
+        dots = cv2.resize(img, (None), fx=f_x, fy=f_y, interpolation = cv2.INTER_LINEAR)
+        blank[y:int(y+h), x:int(x+w)] = dots
+        print blank.dtype
+        sys.stdout.flush()
+        a = dco.getContours(np.asarray(blank, np.uint8))
+        #dci.get_circles(img)
+        points.append(dco.getCentroids(a))
+        #points.append(dci.get)
+    return points
 
 #DOTS IS A IMG MADE BLACK N WHITE SO CAN USE THRESH 240
 def get_dots(dots):
