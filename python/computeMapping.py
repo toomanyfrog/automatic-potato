@@ -115,6 +115,8 @@ def warp_image(original_points, forwarp, points_shape, user_points, cam_points, 
             cam_corners = [cam_points[index], cam_points[index+1], cam_points[index+cols], cam_points[index+cols+1]]
             user_corners = [user_points[index], user_points[index+1], user_points[index+cols], user_points[index+cols+1]]
             reverse_warp_helper(original_corners, user_corners, temp, forwarp, cam_corners, fx, fy, x, y)
+            cv2.imshow("temp", temp)
+            cv2.waitKey(0)
         blank = cv2.add(blank, temp)
 
     cv2.imwrite(path, blank)

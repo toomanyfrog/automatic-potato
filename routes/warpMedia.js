@@ -11,7 +11,7 @@ router.post('/warp', bodyParserUrl, function(req,res){
 
 
     // python warpMedia.py [rows] [cols] [mediaId] [x] [y] [w] [h]
-    var process = spawn('python',["python/warpMedia.py", req.body.rows, req.body.cols,
+    var process = spawn('python',["python/calibration.py", req.body.rows, req.body.cols,
                                 req.body.mediaId, req.body.x, req.body.y, req.body.width, req.body.height]);
 
     process.stdout.on('data',function(chunk){
