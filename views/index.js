@@ -137,7 +137,7 @@ $(document).ready(function() {
 
     $('#uploadCamera').submit(function(e) {
         console.log(numDots)
-        if ($("[name='cameraImgs']")[0].files.length != numDots) {
+        if ($("[name='cameraImgs']")[0].files.length != numDots + 1) {
             e.preventDefault();
             console.log("Bad request");
         } else {

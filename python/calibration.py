@@ -4,7 +4,7 @@ from util import *
 import cv2
 import sys
 import os
-from getUserRect import *
+from getDots import *
 from scipy.spatial.distance import cdist
 from findHomography import FindHomography
 
@@ -122,7 +122,7 @@ number_points = rows * cols
 forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
 
 #   projection dots in the camera image
-cam_img_pts  = map(lambda x: x[0], read_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points)) #camera points
+cam_img_pts  = map(lambda x: x[0], read_cam_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points)) #camera points
 #   dot location in the calibration images
 orig_pts     = map(lambda x: x[0], read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points))
 #   the dot locations in the user-defined rectangle
@@ -150,14 +150,17 @@ for pt in user_def_pts:
         cv2.imshow("img", img2)
         cv2.waitKey(0)
         orig_corners = [orig_pts[a], orig_pts[b], orig_pts[c], orig_pts[d]]
+        print orig_corners
+        print cam_corners
+        sys.stdout.flush()
         transform = fh.sourceToDest(np.array(cam_corners), np.array(orig_corners))
         print fh.getDest(pt, transform)[0]
         warp_coords.append(fh.getDest(pt, transform)[0])
 
-print warp_coords
-for (x,y) in warp_coords:
-    cv2.circle(img, (int(x), int(y)), 3, [0,0,255], -1)
-    cv2.imshow("img", img)
-    cv2.waitKey(0)
+# print warp_coords
+# for (x,y) in warp_coords:
+#     cv2.circle(img, (int(x), int(y)), 3, [0,0,255], -1)
+#     cv2.imshow("img", img)
+#     cv2.waitKey(0)
 
 warp_image(orig_pts, forwarp, (rows, cols), warp_coords, os.getcwd() + "/user/final/" + sys.argv[3]+".jpg")
