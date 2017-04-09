@@ -42,3 +42,4 @@ python/images
 python/*.jpg
 python/output_imgs/
 semantic
+python/cd/media
