@@ -3,11 +3,12 @@ import cv2
 import numpy as np
 
 # TODO: automate getting the folder
-path =  os.getcwd() + "/images/4c28/"
+path =  os.getcwd() + "/Kermit/"
 filenames = os.listdir(path)
+print filenames
 
 for filename in filenames:
-   cv2.imwrite(path+filename, cv2.resize(cv2.imread(path+filename),None,fx=0.75, fy=0.75, interpolation = cv2.INTER_CUBIC))
+   cv2.imwrite(path+filename, cv2.resize(cv2.imread(path+filename),None,fx=0.3, fy=0.3, interpolation = cv2.INTER_CUBIC))
 
 # shape = (560, 996, 3)
 # for i in range(18):

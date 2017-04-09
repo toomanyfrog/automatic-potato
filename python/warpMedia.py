@@ -41,4 +41,8 @@ origpoints = read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_po
 points = read_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points) #camera points
 forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
 height, width, depth = forwarp.shape
-warp_image(map(lambda x:x[0],origpoints), forwarp, (rows, cols), map(lambda x:x[0], userpt_locations), map(lambda x:x[0], points), os.getcwd() + "/user/final/" + sys.argv[3]+".jpg")
+fx = 1.0*width/w
+fy = 1.0*height/h
+#warp_image(map(lambda x:x[0],origpoints), forwarp, (rows, cols), map(lambda x:x[0], userpt_locations),
+warp_image(map(lambda x:x[0],points), forwarp, (rows, cols), map(lambda x:x[0], userpt_locations),
+map(lambda x:x[0], points), os.getcwd() + "/user/final/" + sys.argv[3]+".jpg", fx, fy, x, y)
