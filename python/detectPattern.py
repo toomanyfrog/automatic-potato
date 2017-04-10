@@ -65,7 +65,7 @@ class DetectContours:
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # TODO: fix the threshold to be based on overall image - relative brightness instead of absolute
-        (thresh, im_bw) = cv2.threshold(gray, 145, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
+        (thresh, im_bw) = cv2.threshold(gray, 220, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
 
         #im_bw = 255 - im_bw
         blurred = cv2.GaussianBlur(im_bw,(19,19),0)
