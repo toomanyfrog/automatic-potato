@@ -8,3 +8,5 @@ def renameFiles(folderpath):
     for i in range(len(filenames)):
         if filenames[i][0] != '.':
             shutil.move(path+filenames[i], path+str(i) + ".jpg")
+
+renameFiles('/cd/media/finale/')

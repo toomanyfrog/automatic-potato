@@ -1,6 +1,5 @@
 import os
 import sys
-from renameFiles import *
 
 # python acceptCameraImgs.py mediaId
 

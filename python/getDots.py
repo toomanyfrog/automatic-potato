@@ -9,6 +9,20 @@ from detectPattern import DetectChanges
 # remember to generate the dot image based on their desired projected image
 # two images - one white rectangle and one dots based on user-drawn/getPerspectiveTransform
 
+def read_cam_dots_bg(path, number_points):
+    dch = DetectChanges()
+    dco = DetectContours()
+
+    points = []
+    for i in range(0, number_points*2):
+        if i%2 == 0:    # bg
+            bg = cv2.imread(path + "/" + str(i) + ".jpg")
+        else:
+            img = cv2.imread(path + "/" + str(i) + ".jpg")
+            a = dch.getContours(bg, img)
+            points.append(dco.getCentroids(a))
+    return points
+
 def read_cam_dots(path, number_points):
     dch = DetectChanges()
     dco = DetectContours()
@@ -16,6 +30,8 @@ def read_cam_dots(path, number_points):
     points = []
     bg = cv2.imread(path + "/0.jpg")
     for i in range(0, number_points):
+        print path + "/" + str(i+1) + ".jpg"
+        sys.stdout.flush()
         img = cv2.imread(path + "/" + str(i+1) + ".jpg")
         a = dch.getContours(bg, img)
         points.append(dco.getCentroids(a))
@@ -27,7 +43,7 @@ def read_dots(path, number_points):
     for i in range(0,number_points):
         #if i < 10:
         #    i = str(0) + str(i)
-        
+
         img = cv2.imread(path + "/" + str(i+1) + ".jpg")
         a = dco.getContours(img)
         #dci.get_circles(img)

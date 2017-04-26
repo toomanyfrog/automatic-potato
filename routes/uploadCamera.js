@@ -18,7 +18,7 @@ var storage =   multer.diskStorage({
 });
 
 
-var upload = multer({ storage : storage }).array('cameraImgs',100);
+var upload = multer({ storage : storage }).array('cameraImgs',600);
 
 router.post('/upload', function(req,res){
     upload(req, res, function(err) {

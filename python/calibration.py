@@ -120,14 +120,15 @@ h = float(sys.argv[7])
 
 number_points = rows * cols
 forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
-
+print "working"
 #   projection dots in the camera image
-cam_img_pts  = map(lambda x: x[0], read_cam_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points)) #camera points
+cam_img_pts  = map(lambda x: x[0], read_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points)) #camera points
 #   dot location in the calibration images
 orig_pts     = map(lambda x: x[0], read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points))
 #   the dot locations in the user-defined rectangle
 user_def_pts = map(lambda x: x[0], read_user_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points, x,y,w,h,
                     cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape))
+print "working 2"
 cam_img_pts  = np.asarray(cam_img_pts)
 orig_pts     = np.asarray(orig_pts)
 user_def_pts = np.asarray(user_def_pts)
@@ -136,6 +137,7 @@ warp_coords = []
 # warp_coords contains all the coordinates of the dots in the pre-warp image
 
 for pt in user_def_pts:
+    print "warpcoords"
     img2 = img.copy()
     lpt = pt.tolist()
     lcam = cam_img_pts.tolist()

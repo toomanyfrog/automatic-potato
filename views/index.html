@@ -100,15 +100,15 @@
             </h5>
 
             <div id="cameraSuccess" style="display:none">
-                <div id="canvas">
-                    <canvas style="position:absolute" id="imageForRect" width="500px" height="300px" z-index=1></canvas>
-                    <canvas style="position:absolute" id="drawRect" width="500px" height="300px" z-index=2></canvas>
+                <div id="canvas" style="position:relative; height:1000px">
+                    <canvas style="position:absolute"  id="imageForRect" width="500px" height="300px" z-index=1></canvas>
+                    <canvas style="position:absolute"  id="drawRect" width="500px" height="300px" z-index=2></canvas>
 
                 </div>
             </div>
 
             </h5>
-            <form class="ui form" id="warpMedia" action="/warpMedia/warp" method="post">
+            <form class="ui form" id="warpMedia" action="/warpMedia/warp" method="post" >
                 <div class="ui segment">
                     <div class="ui top attached label">Auto-filled based on your previous input this session.</div>
                     <div class="fields">

@@ -38,9 +38,9 @@ userpt_locations = read_user_dots(os.getcwd() + "/user/generated/" + sys.argv[3]
                     cv2.imread(os.getcwd() + "/user/camera/" + sys.argv[3] + "/0.jpg").shape)
 origpoints = read_dots(os.getcwd() + "/user/generated/" + sys.argv[3], number_points) #camera points
 
-points = read_cam_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points) #camera points
-#forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
-forwarp = cv2.imread(os.getcwd() + "/user/all/all2.jpg") # + ".jpg") #media for warp
+points = read_dots(os.getcwd() + "/user/camera/" + sys.argv[3], number_points) #camera points
+forwarp = cv2.imread(os.getcwd() + "/user/uploads/" + sys.argv[3]) # + ".jpg") #media for warp
+#forwarp = cv2.imread(os.getcwd() + "/user/all/all2.jpg") # + ".jpg") #media for warp
 height, width, depth = forwarp.shape
 fx = 1.0*width/w
 fy = 1.0*height/h

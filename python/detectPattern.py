@@ -15,17 +15,17 @@ class DetectChanges:
     def getContours(self, img, dot): #returns centroid of contour (should only have one)
         # find contours in the thresholded image
 
-        diff = cv2.absdiff(img, dot)
-        cv2.imshow("b", diff)
-        cv2.waitKey(0)
+        diff = cv2.absdiff(cv2.medianBlur(img, 11), dot)
+        #cv2.imshow("b", diff)
+        #cv2.waitKey(0)
         diffg = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
 
         (thresh, im_bw) = cv2.threshold(diffg, 20, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
 
         #im_bw = 255 - im_bw
-        blurred = cv2.medianBlur(im_bw,11)
-        cv2.imshow("b", blurred)
-        cv2.waitKey(0)
+        blurred = cv2.medianBlur(im_bw,19)
+        #cv2.imshow("b", blurred)
+        #cv2.waitKey(0)
 
         #cnts = cv2.findContours(im_bw.copy(), cv2.RETR_EXTERNAL,
         #    cv2.CHAIN_APPROX_SIMPLE)
@@ -39,13 +39,10 @@ class DetectChanges:
         for cnt in cnts:
         # show the image
             cv2.drawContours(show, [cnt], -1, (0, 255, 0), 2)
-    #
+
         cv2.imshow("Image", show)
         cv2.waitKey(0)
         return [cnts[0]]
-
-
-
 
 
 class DetectContours:
@@ -65,7 +62,7 @@ class DetectContours:
 
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         # TODO: fix the threshold to be based on overall image - relative brightness instead of absolute
-        (thresh, im_bw) = cv2.threshold(gray, 220, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
+        (thresh, im_bw) = cv2.threshold(gray, 200, 255, cv2.THRESH_BINARY) # | cv2.THRESH_OTSU)
 
         #im_bw = 255 - im_bw
         blurred = cv2.GaussianBlur(im_bw,(19,19),0)
@@ -81,7 +78,7 @@ class DetectContours:
 
         # show the image
         cv2.drawContours(img, [cnts[0]], -1, (0, 255, 0), 2)
-#
+
         cv2.imshow("Image", img)
         cv2.waitKey(0)
         return [cnts[0]]
